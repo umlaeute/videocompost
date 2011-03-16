@@ -26,10 +26,10 @@ if [ "x${OUTFILE}" = "x" ]; then
  exit 1
 fi
 
-if [ -e "${OUTFILE}" ]; then
- echo "output file \"${OUTFILE}\" already exists" 1>&2
- exit 1
-fi
+#if [ -e "${OUTFILE}" ]; then
+# echo "output file \"${OUTFILE}\" already exists" 1>&2
+# exit 1
+#fi
 
 
 
@@ -41,4 +41,4 @@ gst-launch -v filesrc location="${INFILE}" ! \
     "video/x-raw-rgb, width=(int)${WIDTH}, height=(int)${HEIGHT}" !\
     videorate ! \
     "video/x-raw-rgb, framerate=${FRAMERATE}" ! \
-    filesink location="${OUTFILE}"
+    filesink location="${OUTFILE}" append=true
