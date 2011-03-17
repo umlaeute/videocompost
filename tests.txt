@@ -1,0 +1,28 @@
+#!/bin/sh
+exit 0
+
+#gst-launch filesrc location=${SOURCE} ! decodebin name=foo .foo ! xvimagesink
+
+## generating a GREEN raw movie
+## layout is BGRA
+## caps = video/x-raw-rgb, bpp=(int)32, endianness=(int)4321, depth=(int)32, red_mask=(int)16711680, green_mask=(int)65280, blue_mask=(int)255, alpha_mask=(int)-16777216, width=(int)64, height=(int)64, framerate=(fraction)1/1
+
+#gst-launch -v videotestsrc pattern=green ! "video/x-raw-rgb,width=64,height=64,depth=32,framerate=(fraction)1/1" ! filesink location=green.raw
+
+decoding gives:
+gst-launch filesrc location=green.raw ! "video/x-raw-rgb, bpp=(int)32, endianness=(int)4321, depth=(int)32, red_mask=(int)16711680, green_mask=(int)65280, blue_mask=(int)255, alpha_mask=(int)-16777216, width=(int)64, height=(int)64, framerate=(fraction)1/1" ! ffmpegcolorspace ! xvimagesink
+
+** (gst-launch-0.10:13025): WARNING **: ffmpegcsp0: size 4096 is not a multiple of unit size 16384
+
+
+
+## pixel-aspect-ratio=(fraction)1/4
+
+## next try
+# encoder
+gst-launch -v filesrc location=anim-1.mov ! decodebin ! ffmpegcolorspace !  "video/x-raw-rgb, bpp=(int)32, endianness=(int)4321, depth=(int)32, red_mask=(int)16711680, green_mask=(int)65280, blue_mask=(int)255, alpha_mask=(int)-16777216" ! filesink location=anim-1.raw
+-> caps: video/x-raw-rgb, bpp=(int)32, endianness=(int)4321, depth=(int)32, red_mask=(int)16711680, green_mask=(int)65280, blue_mask=(int)255, alpha_mask=(int)-16777216, width=(int)256, height=(int)256, framerate=(fraction)30/1
+# decoder
+gst-launch filesrc location=anim-1.raw blocksize=262144  ! "video/x-raw-rgb, bpp=(int)32, endianness=(int)4321, depth=(int)32, red_mask=(int)16711680, green_mask=(int)65280, blue_mask=(int)255, alpha_mask=(int)-16777216, width=(int)256, height=(int)256, framerate=(fraction)30/1" ! ffmpegcolorspace ! xvimagesink
+
+
