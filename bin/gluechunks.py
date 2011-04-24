@@ -1,18 +1,20 @@
 #!/usr/bin/env python
-from chunkList import chunkList
+from ChunkList import ChunkList
 import os.path
 import os
 
-cl = chunkList ()
-outfilename = "/tmp/video.raw"
+chunklist = ChunkList ()
+outfilename = "/tmp/outfile.raw"
 if os.path.isfile (outfilename):
-    os.remove (outfilename)
+  os.remove (outfilename)
 
 outfile = open (outfilename, "w")
 
-for chunk in cl.getList ():
-    if os.path.isfile (chunk):
-        infile = open (chunk, "r")
-        outfile.write (infile.read ())
-        infile.close ()
+for chunk in chunklist.getList ():
+  if os.path.isfile (chunk.filename):
+    infile = open (chunk.filename, "r")
+    outfile.write (infile.read ())
+    infile.close ()
 
+# vim: tw=0 ts=2 expandtab
+# EOF

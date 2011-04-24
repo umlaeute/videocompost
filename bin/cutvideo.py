@@ -1,27 +1,31 @@
 #!/usr/bin/env python
-from chunkList import chunkList
+from ChunkList import ChunkList
 
-infilename = "video_in.raw"
+infilename = "/tmp/infile.raw"
 infile = open (infilename, "r")
-chunksize = 20971520         # 20 MB for now
+# pixels_per_frame * bytes_per_pixel * frames
+chunksize = 320 * 240 * 4 * 68
 chunk = True
 chunknum = 0
 
-cl = chunkList ()
+chunklist = ChunkList ()
 
 while True:
-    infile.seek (chunksize * chunknum)
-    chunk = infile.read (chunksize)
-    if not chunk:
-        # print "Reached the end"
-        break
-    outfilename = "/tmp/%s.raw" % chunknum
-    outfile = open (outfilename, "w")
-    outfile.write (chunk)
-    outfile.close ()
-    cl.addChunk (outfilename)
-    # print "wrote chunk #%2d starting at %d" % (chunknum, chunksize * chunknum)
-    chunknum += 1
+  infile.seek (chunksize * chunknum)
+  chunk = infile.read (chunksize)
+  if not chunk:
+    # print "Reached the end"
+    break
+  outfilename = "/tmp/%s.raw" % chunknum
+  outfile = open (outfilename, "w")
+  outfile.write (chunk)
+  outfile.close ()
+  chunklist.addChunk (outfilename)
+  # print "wrote chunk #%2d starting at %d" % (chunknum, chunksize * chunknum)
+  chunknum += 1
 
-cl.printList ()
-cl.saveList ()
+chunklist.printList ()
+chunklist.saveList ()
+
+# vim: tw=0 ts=2 expandtab
+# EOF
