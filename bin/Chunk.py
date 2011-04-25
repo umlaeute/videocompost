@@ -26,15 +26,16 @@ class Chunk:
     try:
       self.map = mmap.mmap (chunk.fileno (), 0)
       self.mappped = True
-      print "Chunk:  mapped %d" % self.index
+      # print "Chunk:  mapped %d" % self.index
       return True
     except IOError:
       return False
 
   def closeChunk (self):
     if self.map:
-      print "Chunk:  closed %d" % self.index
-      self.map.close ();
+      # print "Chunk:  closed %d" % self.index
+      self.map.flush ()
+      self.map.close ()
     self.mapped = False
 
   def printChunk (self):

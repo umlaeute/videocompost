@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+import hashlib
+import time
 from ChunkList import ChunkList
 
 infilename = "/tmp/infile.raw"
@@ -14,14 +17,15 @@ while True:
   infile.seek (chunksize * chunknum)
   chunk = infile.read (chunksize)
   if not chunk:
-    # print "Reached the end"
+    print "Done"
     break
-  outfilename = "/tmp/%s.raw" % chunknum
+  hash = hashlib.md5 (str (time.time ()))
+  outfilename = "/tmp/%s.raw" % hash.hexdigest ()
   outfile = open (outfilename, "w")
   outfile.write (chunk)
   outfile.close ()
   chunklist.addChunk (outfilename)
-  # print "wrote chunk #%2d starting at %d" % (chunknum, chunksize * chunknum)
+  print "wrote chunk #%4d with name %s" % (chunknum, outfilename)
   chunknum += 1
 
 chunklist.printList ()
