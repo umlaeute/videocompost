@@ -1,12 +1,26 @@
 #!/usr/bin/env python
 
+"""
+  takes the file 'infile.raw' (expected in /usr/local/vc)
+  and cuts it into chunks of a defined size, adding the chunks
+  to chunklist and storing them in /usr/local/vc/chunks/.
+"""
+
 import hashlib
 import time
+import sys
+import os
 from ChunkList import ChunkList
+from vcconfig import *
 
-infilename = "/tmp/infile.raw"
-infile = open (infilename, "r")
+if os.path.isfile (infilename):
+  infile = open (infilename, "r")
+else:
+  print "%s not found" % infilename
+  sys.exit (1)
+
 # pixels_per_frame * bytes_per_pixel * frames
+# will be changed to aprox. 2GB
 chunksize = 320 * 240 * 4 * 68
 chunk = True
 chunknum = 0
@@ -20,16 +34,17 @@ while True:
     print "Done"
     break
   hash = hashlib.md5 (str (time.time ()))
-  outfilename = "/tmp/%s.raw" % hash.hexdigest ()
-  outfile = open (outfilename, "w")
-  outfile.write (chunk)
-  outfile.close ()
-  chunklist.addChunk (outfilename)
-  print "wrote chunk #%4d with name %s" % (chunknum, outfilename)
+  chunkfilename = os.path.join (chunkdir, "%s.raw" % hash.hexdigest ())
+  chunkfile = open (chunkfilename, "w")
+  chunkfile.write (chunk)
+  chunkfile.close ()
+  chunklist.addChunk (chunkfilename)
+  print "wrote chunk #%4d with name %s" % (chunknum, chunkfilename)
   chunknum += 1
 
-chunklist.printList ()
+os.remove (infilename)
 chunklist.saveList ()
+chunklist.printList ()
 
 # vim: tw=0 ts=2 expandtab
 # EOF

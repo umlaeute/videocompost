@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-from ChunkList import ChunkList
-import os.path
+
 import os
+from ChunkList import ChunkList
+from vcconfig import *
 
 chunklist = ChunkList ()
-outfilename = "/tmp/outfile.raw"
+outfilename = os.path.join (basedir, "video.raw")
 if os.path.isfile (outfilename):
   os.remove (outfilename)
 

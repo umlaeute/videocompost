@@ -5,8 +5,8 @@ import pickle
 import fcntl
 import os
 import mmap
-# import os.path
 from Chunk import Chunk
+from vcconfig import *
 
 class ChunkList:
   """
@@ -14,7 +14,7 @@ class ChunkList:
   """
 
   def __init__ (self):
-    self.picklefilename = "/tmp/ChunkList.pck"
+    self.picklefilename = os.path.join (configdir, "ChunkList.pck")
     if os.path.isfile (self.picklefilename):
       self.filetime = os.stat (self.picklefilename).st_ctime
       self.loadList ()

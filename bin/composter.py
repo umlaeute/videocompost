@@ -6,12 +6,12 @@ import fcntl
 import pickle
 import os.path
 import time
-
+from vcconfig import *
 
 class BotList:
 
   def __init__ (self):
-    self.picklefilename = "/tmp/botlist.pck"
+    self.picklefilename = os.path.join (configdir, "botlist.pck")
     if os.path.isfile (self.picklefilename):
       self.loadList ()
     else:
