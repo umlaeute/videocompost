@@ -41,15 +41,17 @@ bots (python)
       Liste von Chunks mit Methoden zum Management und zum Datenzugriff.
   * CompostAccess(.py)
     Eine Art Interface für Bots um auf Videodaten zugreifen zu können.
+  * BotList(.py)
+    Liste der Bots/Agents
 
 Verzeichnisse und Files:
 
-  home:       /usr/local/vc/
-  chunks:     /usr/local/vc/chunks/
-  configs:    /usr/local/vc/config/
-  incoming:   /usr/local/vc/incoming/
-  raw video:  /usr/local/vc/video.raw
-  ogg video:  /usr/local/vc/video.ogv
-  new video:  /usr/local/vc/infile.raw
-  scripts:    /usr/local/bin/*
+  home:       /home/vc/             :: basedir
+  scripts:    /home/bc/bin/*        :: .sh and .py files
+  chunks:     /home/vc/chunks/      :: .raw video chunks
+  configs:    /home/vc/config/      :: configs for .py files
+  incoming:   /home/vc/incoming/    :: incoming .ogv files
+  raw video:  /home/vc/video.raw    :: result of gluechunks.py
+  ogg video:  /home/vc/video.ogv    :: result of raw2video.sh
+  new video:  /home/vc/infile.raw   :: result of video2raw.sh
 
