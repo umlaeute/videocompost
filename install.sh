@@ -9,8 +9,8 @@ group="vc"
 # all files go to ${user}'s home
 basedir="/home/${user}"
 bindir="/${basedir}/bin"
-binaries="addBotToList.py BotList.py Chunk.py cutvideo.py ChunkList.py composter.py haecksler.sh playraw.sh video2raw.sh CompostAccess.py gluechunks.py raw2video.sh"
-directories="bin chunks config incoming log"
+binaries="addBotToList.py BotList.py Chunk.py cutvideo.py ChunkList.py composter.py haecksler.sh Logger.py playraw.sh video2raw.sh CompostAccess.py gluechunks.py raw2video.sh"
+directories="bin chunks config incoming log run"
 
 # check if ${user} exists
 getent passwd ${user} >/dev/null
@@ -45,9 +45,13 @@ done
 for bin in ${binaries}
 do
     echo -n "Installing ${bin}: "
-    cp "bin/${bin}" ${bindir}
+    cp bin/${bin} ${bindir}
     echo "done"
 done
+
+# echo -n "Installing cronscript as /etc/cron.hourly/videocompost: "
+# cp bin/cronscript /etc/cron.hourly/videocompost
+# echo "done"
 
 echo -n "creating vcconfig.py: "
 cat << EOF > ${bindir}/vcconfig.py
@@ -62,6 +66,10 @@ configdir = os.path.join (basedir, "config")
 infilename = os.path.join (basedir, "infile.raw")
 chunkdir = os.path.join (basedir, "chunks")
 bindir = os.path.join (basedir, "bin")
+logdir = os.path.join (basedir, "log")
+rundir = os.path.join (basedir, "run")
+logfilename = os.path.join (logdir, "vclog")
+runfilename = os.path.join (rundir, "vcrun")
 
 if __name__ == "__main__":
   pass
