@@ -6,7 +6,18 @@ user="vc"
 group="vc"
 basedir="/home/${user}"
 indir="${basedir}/incoming"
+logger="${basedir}/bin/Logger.py"
+lockfile="${basedir}/run/hacksler.lock"
 
+# exit if a lockfile is present
+if [ -f ${lockfile} ]
+then
+  ${logger} "[haecksler]: lockfile present.  exiting."
+  exit 0
+fi
+touch ${lockfile}
+
+# work in basedir
 cd ${basedir}
 
 # add videos sorted by upload time
@@ -16,6 +27,7 @@ do
 
   if [ -f ${infile} ]
   then
+    ${logger} "[haecksler]: importing ${video}"
     # convert it to .raw format
     ./bin/video2raw.sh ${infile} infile.raw
     
@@ -27,5 +39,6 @@ do
   fi
 done
 
+rm -f ${lockfile}
 # vim: ts=2 tw=0 expandtab
 # EOF
