@@ -3,7 +3,6 @@
 import os
 import fcntl
 import pickle
-import os.path
 import time
 from vcconfig import *
 
@@ -33,8 +32,9 @@ class BotList:
     return self.bots
 
   def addBot (self, filename):
-    newbot = filename [:-3]
+    os.chdir (bindir)
     if os.path.isfile (filename):
+      newbot = filename [:-3]
       for bot in self.bots:
         if bot == newbot:
           return
