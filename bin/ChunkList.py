@@ -5,6 +5,7 @@ import pickle
 import fcntl
 import os
 import mmap
+import sys
 from Chunk import Chunk
 from vcconfig import *
 
@@ -147,20 +148,39 @@ class ChunkList:
         os.remove (chunk.filename)
       except OSError:
         pass
-      self.chunks.remove (chunk)
-    if len (self.chunks) == 0:
-      os.remove (self.picklefilename)
-    else:
-      print "%d remaining chunks ..." % len (self.chunks)
-      self.printList ()
-      self.saveList ()
-    
+      # self.chunks.remove (chunk)
+    os.remove (self.picklefilename)
+
+  def deleteChunk (num):
+    pass
+
   def printList (self):
     for chunk in self.chunks:
       chunk.printChunk ()
 
+def runcmd (cmd):
+  chunklist = ChunkList ()
+
+  if cmd == "list":
+    chunklist.printList ()
+    return 0
+  if cmd == "delall":
+    chunklist.deleteList ()
+    return 0
+  print ">> Unknown command '{0}'".format (cmd)
+  return 0
+
+def cmdline ():
+  while True:
+    try:
+      cmd = raw_input ("<< ")
+      runcmd (cmd)
+    except EOFError:
+      print "Exiting ..."
+      return 0
+
 if __name__ == "__main__":
-  pass
+  sys.exit (cmdline ())
 
 # vim: tw=0 ts=2 expandtab
 # EOF
