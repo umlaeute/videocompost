@@ -6,7 +6,7 @@ user="vc"
 group="vc"
 basedir="/home/${user}"
 indir="${basedir}/incoming"
-logger="${basedir}/bin/Logger.py"
+logger="${basedir}/bin/VCLogger.py"
 lockfile="${basedir}/run/hacksler.lock"
 
 # exit if a lockfile is present

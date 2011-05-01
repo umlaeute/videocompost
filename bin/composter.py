@@ -8,7 +8,7 @@ import time
 import signal
 from BotList import BotList
 from vcconfig import *
-from Logger import writelog
+from VCLogger import writelog
 
 class VCError (Exception):
   pass

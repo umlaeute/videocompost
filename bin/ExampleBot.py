@@ -73,7 +73,7 @@ import pickle
 import signal
 from random import randint
 from CompostAccess import CompostAccess
-from Logger import writelog
+from VCLogger import writelog
 from vcconfig import *
 
 """

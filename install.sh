@@ -9,7 +9,7 @@ group="vc"
 # all files go to ${user}'s home
 basedir="/home/${user}"
 bindir="/${basedir}/bin"
-binaries="addBotToList.py BotList.py Chunk.py cutvideo.py ChunkList.py composter.py haecksler.sh Logger.py playraw.sh video2raw.sh CompostAccess.py gluechunks.py raw2video.sh"
+binaries="addBotToList.py BotList.py Chunk.py cutvideo.py ChunkList.py composter.py haecksler.sh VCLogger.py playraw.sh video2raw.sh CompostAccess.py gluechunks.py raw2video.sh"
 directories="bin chunks config incoming log"
 
 # check if ${user} exists
