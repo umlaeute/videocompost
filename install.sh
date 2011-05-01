@@ -67,7 +67,6 @@ infilename = os.path.join (basedir, "infile.raw")
 chunkdir = os.path.join (basedir, "chunks")
 bindir = os.path.join (basedir, "bin")
 logdir = os.path.join (basedir, "log")
-rundir = os.path.join (basedir, "run")
 logfilename = os.path.join (logdir, "vclog")
 runfilename = os.path.join (rundir, "vcrun")
 
