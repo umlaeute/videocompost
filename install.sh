@@ -10,7 +10,7 @@ group="vc"
 basedir="/home/${user}"
 bindir="/${basedir}/bin"
 binaries="addBotToList.py BotList.py Chunk.py cutvideo.py ChunkList.py composter.py haecksler.sh Logger.py playraw.sh video2raw.sh CompostAccess.py gluechunks.py raw2video.sh"
-directories="bin chunks config incoming log run"
+directories="bin chunks config incoming log"
 
 # check if ${user} exists
 getent passwd ${user} >/dev/null
@@ -68,7 +68,6 @@ chunkdir = os.path.join (basedir, "chunks")
 bindir = os.path.join (basedir, "bin")
 logdir = os.path.join (basedir, "log")
 logfilename = os.path.join (logdir, "vclog")
-runfilename = os.path.join (rundir, "vcrun")
 
 if __name__ == "__main__":
   pass
