@@ -35,6 +35,9 @@ def mainLoop ():
   cycletime = 30
   signal.signal (signal.SIGINT, interrupthandler)
   signal.signal (signal.SIGHUP, interrupthandler)
+  pidfile = open (pidfilename, "w")
+  pidfile.write ("{0}".format (os.getpid ()))
+  pidfile.close ()
   while True:
     botlist = BotList ()
     numbots = len (botlist.bots)
