@@ -10,8 +10,8 @@ class Chunk:
     self._bytes = os.stat (self._filename).st_size
     self._frames = self._bytes / 307200
     self._pixels = self._bytes / 4
-    self._firstframe = 0
     self._index = -1
+    self._firstframe = 0
     self._firstpixel = -1
     self._lastpixel = -1
     self._map = None
@@ -35,7 +35,7 @@ class Chunk:
       # print "Chunk:  closed %d" % self._index
       self._map.flush ()
       self._map.close ()
-      del self._map
+      self._map = None
 
   def showChunk (self):
     print "Chunk _index %4d\nFilename %s\nFrames %4d-%4d\nPixels %8d-%8d\n%d Bytes\n---\n" % (
