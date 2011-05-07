@@ -3,7 +3,7 @@
 Example for a videocompost bot This will be imported by composter.py
 which then will call this module's runMe () method.
 
-Version 0.1 May 1, 2011
+Version 0.2 May 7, 2011
 
 Place your code in the runMe () method below.  If you want to leave log
 messages, use the writelog () method.  It would be nice to provide the
@@ -39,23 +39,23 @@ To access video data you have two options:
 
   The total number of pixels available is
 
-    compost.chunklist.bytes / 4
+    compost._pixels
 
   To run through all the pixels in the video you could thus use a loop
   like
 
-    for pixel in range (0, compost.chunklist.bytes / 4):
+    for pixel in range (0, compost._pixels):
       do something with pixel
 
 * mmap access
 
   Use the compost module's method mapChunk (num) to map a chunk into
-  memory:
+  memory.  To map the third chunk issue
 
     compost.mapChunk (3)
 
-  The mapped chunk can be accessed via compost.chunklist.chunk.map.  See
-  the python documentation [1] for details.
+  The mapped chunk can be accessed via compost._map.  See
+  the python documentation [1] for details on mmap objects.
 
   Video data is in raw format.  We use 4 bytes (32 bits) per pixel.  The
   first byte is actually unused, bytes 2 to 4 are RGB values.
@@ -67,11 +67,16 @@ you have not seen before.
 [1]  http://docs.python.org/release/2.6.6/library/mmap.html
 """
 
+"""
+python classes used by this bot
+"""
 import time
 import os.path
 import pickle
 import signal
-from random import randint
+"""
+custom classes to access video compost data
+"""
 from CompostAccess import CompostAccess
 from VCLogger import writelog
 from vcconfig import *
@@ -85,9 +90,9 @@ config["myname"] = __name__
 config["counter"] = 0
 
 """
-create an instance of CompostAccess to access video data
+create an instance of Compost to access video data
 """
-compost = CompostAccess ()
+compost = Compost ()
 
 class BotError (Exception):
   """
@@ -127,16 +132,17 @@ def runMe ():
   """
   main method called by composter.py
   """
-  loadConfig ()
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
   try:
     """
     your code here
     """
+    loadConfig ()
     writelog ("[{0}] counting {1}".format (__name__, config["counter"]))
     config["counter"] += 1
     saveConfig ()
+
   except BotError as e:
     saveConfig ()
     return 0
