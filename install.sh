@@ -9,7 +9,7 @@ group="vc"
 # all files go to ${user}'s home
 basedir="/home/${user}"
 bindir="/${basedir}/bin"
-binaries="addBotToList.py BotList.py Chunk.py cutvideo.py Compost.py composter.py haecksler.sh VCLogger.py playraw.sh video2raw.sh CompostAccess.py gluechunks.py raw2video.sh"
+binaries="addBotToList.py BotList.py Chunk.py cutvideo.py Compost.py composter.py haecksler.sh VCLogger.py playraw.sh video2raw.sh gluechunks.py raw2video.sh"
 directories="bin config compost incoming log run"
 
 # check if ${user} exists
@@ -65,9 +65,11 @@ basedir = "/home/%s" % user
 configdir = os.path.join (basedir, "config")
 infilename = os.path.join (basedir, "infile.raw")
 compostdir = os.path.join (basedir, "compost")
+rundir = os.path.join (basedir, "run")
 bindir = os.path.join (basedir, "bin")
 logdir = os.path.join (basedir, "log")
 logfilename = os.path.join (logdir, "vclog")
+pidfilename = os.path.join (rundir, "vc.pid")
 
 if __name__ == "__main__":
   pass
