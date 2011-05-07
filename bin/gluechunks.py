@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 
 import os
-from ChunkList import ChunkList
+from Compost import Compost
 from vcconfig import *
 
-chunklist = ChunkList ()
+compost = Compost ()
 outfilename = os.path.join (basedir, "video.raw")
 if os.path.isfile (outfilename):
   os.remove (outfilename)
 
 outfile = open (outfilename, "w")
 
-for chunk in chunklist.getList ():
-  if os.path.isfile (chunk.filename):
-    infile = open (chunk.filename, "r")
+for chunk in compost._chunks:
+  if os.path.isfile (chunk._filename):
+    infile = open (chunk._filename, "r")
     outfile.write (infile.read ())
     infile.close ()
 

@@ -9,8 +9,8 @@ group="vc"
 # all files go to ${user}'s home
 basedir="/home/${user}"
 bindir="/${basedir}/bin"
-binaries="addBotToList.py BotList.py Chunk.py cutvideo.py ChunkList.py composter.py haecksler.sh VCLogger.py playraw.sh video2raw.sh CompostAccess.py gluechunks.py raw2video.sh"
-directories="bin chunks config incoming log"
+binaries="addBotToList.py BotList.py Chunk.py cutvideo.py Compost.py composter.py haecksler.sh VCLogger.py playraw.sh video2raw.sh CompostAccess.py gluechunks.py raw2video.sh"
+directories="bin config compost incoming log run"
 
 # check if ${user} exists
 getent passwd ${user} >/dev/null
@@ -64,7 +64,7 @@ group = "${group}"
 basedir = "/home/%s" % user
 configdir = os.path.join (basedir, "config")
 infilename = os.path.join (basedir, "infile.raw")
-chunkdir = os.path.join (basedir, "chunks")
+compostdir = os.path.join (basedir, "compost")
 bindir = os.path.join (basedir, "bin")
 logdir = os.path.join (basedir, "log")
 logfilename = os.path.join (logdir, "vclog")

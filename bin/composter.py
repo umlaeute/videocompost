@@ -21,15 +21,6 @@ class VCInterrupt (VCError):
   def __init__ (self, msg):
     self.msg = msg
 
-# def keepRunning ():
-#   # FIXME:  check what we read from runfile
-#   if os.path.isfile (runfilename):
-#     runfile = open (runfilename, "r")
-#     run = int (runfile.read ())
-#     runfile.close ()
-#     return run
-#   return True
-
 def alarmhandler (signum, frame):
   raise VCTimeout ("received signal {0}".format (signum))
 

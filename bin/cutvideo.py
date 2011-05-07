@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
 """
-  takes the file 'infile.raw' (expected in /usr/local/vc)
+  takes the file 'infile.raw' (expected in /basedir)
   and cuts it into chunks of a defined size, adding the chunks
-  to chunklist and storing them in /usr/local/vc/chunks/.
+  to compost and storing them in /basedir/compost/.
 """
 
 import hashlib
 import time
 import sys
 import os
-from ChunkList import ChunkList
+from Compost import Compost
 from vcconfig import *
 
 if os.path.isfile (infilename):
@@ -25,26 +25,26 @@ chunksize = 320 * 240 * 4 * 68
 chunk = True
 chunknum = 0
 
-chunklist = ChunkList ()
+compost = Compost ()
 
 while True:
   infile.seek (chunksize * chunknum)
   chunk = infile.read (chunksize)
   if not chunk:
-    print "Done"
+    # print "Done"
     break
   hash = hashlib.md5 (str (time.time ()))
-  chunkfilename = os.path.join (chunkdir, "%s.raw" % hash.hexdigest ())
+  chunkfilename = os.path.join (compostdir, "%s.raw" % hash.hexdigest ())
   chunkfile = open (chunkfilename, "w")
   chunkfile.write (chunk)
   chunkfile.close ()
-  chunklist.addChunk (chunkfilename)
-  print "wrote chunk #%4d with name %s" % (chunknum, chunkfilename)
+  compost.addChunk (chunkfilename)
+  # print "wrote chunk #%4d with name %s" % (chunknum, chunkfilename)
   chunknum += 1
 
 os.remove (infilename)
-chunklist.saveList ()
-chunklist.printList ()
+compost.save ()
+# compost.show ()
 
 # vim: tw=0 ts=2 expandtab
 # EOF
