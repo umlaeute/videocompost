@@ -6,7 +6,9 @@ import fcntl
 import os
 import mmap
 import sys
+import time
 from Chunk import Chunk
+from VCLogger import writelog
 from vcconfig import *
 
 class Compost:
@@ -26,6 +28,7 @@ class Compost:
     self._frames = 0
     self._bytes = 0
     self._pixels = 0
+    self._entropy = 0
     self.update ()
 
   def renew (self):
@@ -85,6 +88,7 @@ class Compost:
     if self._chunks[num].mapChunk ():
       self._chunk = self._chunks[num]
       self._map = self._chunk._map
+      self.dumpEntropy ()
       return self._map
     return None
 
@@ -98,22 +102,15 @@ class Compost:
     for i in range (0, len (self._chunks)):
       if self._chunks[i]._firstpixel <= pixel and self._chunks[i]._lastpixel >= pixel:
         return self.mapChunk (i)
-    # print "Failed mapping _chunk for pixel %d" % pixel
     return False
     
   def getPixelColor (self, pixel):
-    if not self._chunk:
-      if not self.mapPixelChunk (pixel):
-        return False
-    elif pixel < self._chunk._firstpixel or pixel > self._chunk._lastpixel:
-      self.closeChunk ()
-      if not self.mapPixelChunk (pixel):
-        return False
+    if not self.mapPixelChunk (pixel):
+      return None
     address = (pixel - self._chunk._firstpixel) * 4
-    # print "getPixelColor for pixel %d at local address %d" % (pixel, address)
     color = []
     for i in range (1, 4):
-      color.append (ord (self._chunk._map[address+i]))
+      color.append (ord (self._map[address+i]))
     return color
       
   def setPixelColor (self, pixel, color = [0, 0, 0]):
@@ -125,20 +122,23 @@ class Compost:
         c[i] = chr (255)
       else:
         c[i] = chr (color[i])
-    if not self._chunk:
-      if not self.mapPixelChunk (pixel):
-        # print "Failed setting color to pixel %d" % pixel
-        return None
-    elif pixel < self._chunk._firstpixel or pixel > self._chunk._lastpixel:
-      self.closeChunk ()
-      if not self.mapPixelChunk (pixel):
-        # print "Failed setting color to pixel %d" % pixel
-        return None
+    if not self.mapPixelChunk (pixel):
+      return None
     address = (pixel - self._chunk._firstpixel) * 4
-    # print "setPixelColor for pixel %d at local address %d to r=%d g=%d b=%d" % (pixel, address, ord (c[0]), ord (c[1]), ord (c[2]))
     for i in range (1, 4):
       self._map[address+i] = c[i-1]
+      self._entropy += ord (c[i-1])
     return color
+
+  def dumpEntropy (self):
+    if self._entropy == 0:
+      return
+    self._entropy += int (time.strftime ("%S"))
+    randdev = open ("/dev/urandom", "w+b")
+    randdev.write ("{0}".format (self._entropy))
+    writelog ("[Compost]:  wrote {0} to /dev/urandom".format (self._entropy))
+    randdev.close ()
+    self._entropy = 0
 
   def delete (self):
     print "Deleting all %d _chunks" % len (self._chunks)
