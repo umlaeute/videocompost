@@ -4,61 +4,76 @@ import sys
 import os
 import fcntl
 import pickle
-import os.path
 import time
+import signal
+from BotList import BotList
+from vcconfig import *
+from VCLogger import writelog
 
+class VCError (Exception):
+  pass
 
-class BotList:
+class VCTimeout (VCError):
+  def __init__ (self, msg):
+    self.msg = msg
 
-  def __init__ (self):
-    self.picklefilename = "/tmp/botlist.pck"
-    if os.path.isfile (self.picklefilename):
-      self.loadList ()
-    else:
-      self.bots = []
+class VCInterrupt (VCError):
+  def __init__ (self, msg):
+    self.msg = msg
 
-  def saveList (self):
-    picklefile = open (self.picklefilename, "w")
-    fcntl.flock (picklefile, fcntl.LOCK_EX)
-    pickle.dump (self.bots, picklefile)
-    fcntl.flock (picklefile, fcntl.LOCK_UN)
-    picklefile.close ()
+def alarmhandler (signum, frame):
+  raise VCTimeout ("received signal {0}".format (signum))
 
-  def loadList (self):
-    picklefile = open (self.picklefilename, "r")
-    fcntl.flock (picklefile, fcntl.LOCK_EX)
-    self.bots = pickle.load (picklefile)
-    fcntl.flock (picklefile, fcntl.LOCK_UN)
-
-  def getList (self):
-    return self.bots
-
-  def addBot (self, filename):
-    newbot = filename [:-3]
-    if os.path.isfile (filename):
-      for bot in self.bots:
-        if bot == newbot:
-          return
-      self.bots.append (newbot)
+def interrupthandler (signum, frame):
+  raise VCInterrupt ("received signal {0}".format (signum))
 
 def mainLoop ():
   """
   """
-  run = True
   # cycletime = 21600 # 6 hours, 4 cycles a day
   # cycletime = 3600
   cycletime = 30
-  while run:
+  signal.signal (signal.SIGINT, interrupthandler)
+  signal.signal (signal.SIGHUP, interrupthandler)
+  if os.path.isfile (pidfilename):
+    writelog ("[composter]:  stale (?) pidfile found.  Exiting.")
+    return 1;
+  pidfile = open (pidfilename, "w")
+  pidfile.write ("{0}".format (os.getpid ()))
+  pidfile.close ()
+  writelog ("[composter]:  started with pid {0}".format (os.getpid ()))
+  while True:
     botlist = BotList ()
     numbots = len (botlist.bots)
+    writelog ("[composter]:  started cycle with {0} seconds per bot".format (cycletime / numbots))
     for b in botlist.getList ():
       try:
         bot = __import__ (b)
         reload (bot)
-        bot.runMe (time.time () + (cycletime / numbots))
+        pid = os.fork ()
+        if pid == 0:
+          return bot.runMe ()
+        else:
+          signal.signal (signal.SIGALRM, alarmhandler)
+          signal.alarm (cycletime / numbots)
+          try:
+            writelog ("[composter]:  waiting for {0}[.py] with pid {1}".format (b, pid))
+            rv = os.waitpid (pid, 0)
+            writelog ("[composter]:  {0}[.py] with pid {1} returned {2}".format (b, pid, rv))
+          except VCTimeout:
+            os.kill (pid, signal.SIGHUP)
+            rv = os.waitpid (pid, 0)
+            writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after timeout".format (b, pid, rv))
       except ImportError:
-        print "Error importing %s.py" % b
-        run = False
+        writelog ("[composter]:  Error importing {0}[.py]".format (b))
+      except VCInterrupt:
+        os.kill (pid, signal.SIGHUP)
+        rv = os.waitpid (pid, 0)
+        writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after interrupt".format (b, pid, rv))
+        os.remove (pidfilename)
+        return 0
+  writelog ("[composter]:  Don't know how I got here ...")
+  os.remove (pidfilename)
   return 0
 
 if __name__ == "__main__":
