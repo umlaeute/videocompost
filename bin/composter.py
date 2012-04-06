@@ -37,6 +37,7 @@ def mainLoop ():
   signal.signal (signal.SIGHUP, interrupthandler)
   if os.path.isfile (pidfilename):
     writelog ("[composter]:  stale (?) pidfile found.  Exiting.")
+    print "[composter]:  stale (?) pidfile found.  Exiting."
     return 1;
   pidfile = open (pidfilename, "w")
   pidfile.write ("{0}".format (os.getpid ()))
