@@ -127,16 +127,20 @@ class Compost:
     address = (pixel - self._chunk._firstpixel) * 4
     for i in range (1, 4):
       self._map[address+i] = c[i-1]
-      self._entropy += ord (c[i-1])
+      self.addEntropy (ord (c[i-1]))
     return color
 
+  def addEntropy (self, entropy):
+    self._entropy += entropy
+
   def dumpEntropy (self):
-    if self._entropy == 0:
-      return
-    self._entropy += int (time.strftime ("%S"))
-    randdev = open ("/dev/urandom", "w+b")
-    randdev.write ("{0}".format (self._entropy))
-    writelog ("[Compost]:  wrote {0} to /dev/urandom".format (self._entropy))
+    while self._entropy > (self._map.size () + 512):
+      self._entropy -= (self._map.size () + 512)
+    randdev = open ("/dev/urandom", "w")
+    self._map.seek (self._entropy)
+    randdev.write (self._map.read (512))
+    self._map.seek (0)
+    writelog ("[Compost]:  wrote 512 bytes from chunk {0} starting at {1} to /dev/urandom".format (self._chunk._index, self._entropy))
     randdev.close ()
     self._entropy = 0
 

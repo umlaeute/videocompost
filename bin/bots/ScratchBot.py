@@ -74,6 +74,8 @@ import time
 import os.path
 import pickle
 import signal
+import random
+
 """
 custom classes to access video compost data
 """
@@ -87,7 +89,6 @@ to store data across runs.
 """
 config = {}
 config["myname"] = __name__
-config["counter"] = 0
 
 """
 create an instance of Compost to access video data
@@ -139,8 +140,20 @@ def runMe ():
     your code here
     """
     loadConfig ()
-    writelog ("[{0}] counting {1}".format (__name__, config["counter"]))
-    config["counter"] += 1
+    framesize = 76800
+    random.seed ()
+    length = random.randint (5, 120)
+    duration = random.randint (1, 125)
+    startpixel = random.randint (0, compost._pixels - length)
+    writelog ("[{0}] scratch starting at pixel {1} with length {2} and duration {3} frames".format (
+      __name__, startpixel, length, duration))
+    for i in range (0, duration):
+      startpixel += framesize * i
+      for pixel in range (startpixel, startpixel + length * 320, 320):
+        compost.setPixelColor (pixel, [255, 255, 255])
+    del length
+    del duration
+    del startpixel
     saveConfig ()
 
   except BotError as e:

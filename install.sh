@@ -3,8 +3,8 @@
 # prepare the directory structure and install binaries
 
 # change user/group if you want
-user="vc"
-group="vc"
+user="kompost"
+group="kompost"
 
 # all files go to ${user}'s home
 basedir="/home/${user}"
