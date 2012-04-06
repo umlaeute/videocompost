@@ -64,8 +64,8 @@ def mainLoop ():
             os.kill (pid, signal.SIGHUP)
             rv = os.waitpid (pid, 0)
             writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after timeout".format (b, pid, rv))
-      except ImportError:
-        writelog ("[composter]:  Error importing {0}[.py]".format (b))
+      except ImportError as e:
+        writelog ("[composter]:  Error importing {0}[.py] '{1}'".format (b, e))
       except VCInterrupt:
         os.kill (pid, signal.SIGHUP)
         rv = os.waitpid (pid, 0)
