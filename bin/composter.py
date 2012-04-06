@@ -67,6 +67,8 @@ def mainLoop ():
             writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after timeout".format (b, pid, rv))
       except ImportError:
         writelog ("[composter]:  Error importing {0}[.py]".format (b))
+      except SyntaxError:
+        writelog ("[composter]:  Bot {0} has Syntax Error".format (b))
       except VCInterrupt:
         os.kill (pid, signal.SIGHUP)
         rv = os.waitpid (pid, 0)
