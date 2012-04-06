@@ -5,11 +5,18 @@ import pygtk, gtk, gobject
 import pygst
 pygst.require("0.10")
 import gst
+from Compost import Compost
 
 class GTK_Main:
 	
 	def __init__(self, directoryname="/tmp"):
 		self.dir = directoryname
+		self.compost_init()
+		print "hellow world\n"
+		print self.compost
+		## liste mit verfuegbaren chunks
+		# self.compost._chunkss
+		self.chunkindex=0
 		window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		window.set_title("Video-Player")
 		window.set_default_size(500, 400)
@@ -22,6 +29,7 @@ class GTK_Main:
 		window.show_all()
 		
 		self.player = gst.element_factory_make("playbin2", "player")
+
 
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
@@ -55,10 +63,29 @@ class GTK_Main:
 			self.player.set_state(gst.STATE_NULL)
 			err, debug = message.parse_error()
 			print "Error: %s" % err, debug
-			self.button.set_label("Start")
+#			self.button.set_label("Start")
 
 	def get_next_file(self):
-		return "/tmp/homer.avi"
+		print self.compost._chunks
+		print "======================"
+		chunk = self.get_next_chunk()
+		return chunk._filename
+
+	def get_next_chunk(self):
+		if self.chunkindex < len(self.compost._chunks):
+			i=self.chunkindex
+			self.chunkindex+=1
+			return self.compost._chunks[i]
+		return self.compost_init()
+
+
+	def compost_init(self):
+		self.compost = Compost()
+		self.compost.load()
+		self.chunkindex=1
+		return self.compost._chunks[0]
+		
+
 
 
 	def on_sync_message(self, bus, message):
@@ -72,9 +99,7 @@ class GTK_Main:
 			imagesink.set_xwindow_id(self.movie_window.window.xid)
 			gtk.gdk.threads_leave()
 			
-if len (sys.argv) != 2:
-  sys.exit (1)
-GTK_Main(sys.argv[1])
+GTK_Main()
 gtk.gdk.threads_init()
 gtk.main()
 
