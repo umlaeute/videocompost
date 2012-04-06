@@ -38,6 +38,7 @@ def mainLoop ():
   signal.signal (signal.SIGHUP, interrupthandler)
   if os.path.isfile (pidfilename):
     writelog ("[composter]:  stale (?) pidfile found.  Exiting.")
+    print "[composter]:  stale (?) pidfile found.  Exiting."
     return 1;
   pidfile = open (pidfilename, "w")
   pidfile.write ("{0}".format (os.getpid ()))
@@ -65,8 +66,10 @@ def mainLoop ():
             os.kill (pid, signal.SIGHUP)
             rv = os.waitpid (pid, 0)
             writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after timeout".format (b, pid, rv))
-      except ImportError as e:
-        writelog ("[composter]:  Error importing {0}[.py] '{1}'".format (b, e))
+      except ImportError:
+        writelog ("[composter]:  Error importing {0}[.py]".format (b))
+      except SyntaxError:
+        writelog ("[composter]:  Bot {0} has Syntax Error".format (b))
       except VCInterrupt:
         os.kill (pid, signal.SIGHUP)
         rv = os.waitpid (pid, 0)
