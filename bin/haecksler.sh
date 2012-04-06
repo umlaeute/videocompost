@@ -2,8 +2,8 @@
 
 # add videos in incoming to compost
 
-user="vc"
-group="vc"
+user="kompost"
+group="kompost"
 basedir="/home/${user}"
 indir="${basedir}/incoming"
 logger="${basedir}/bin/VCLogger.py"
