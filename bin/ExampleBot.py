@@ -77,7 +77,7 @@ import signal
 """
 custom classes to access video compost data
 """
-from CompostAccess import CompostAccess
+from Compost import Compost
 from VCLogger import writelog
 from vcconfig import *
 
