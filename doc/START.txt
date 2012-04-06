@@ -1,0 +1,35 @@
+1. checkout
+2.  anpassen: user "vc" -> "kompost"
+3. ./install.sh
+
+
+
+what does what:
+
+
+- TODO: fetchdata
+	holt daten von server
+	befüllt das incoming verzeichnis
+
+- bots-hinzufügen:
+	cp <botname> nach bin/
+	cd bin/
+	./addBotToList.py <botname>
+
+- "haecksler.sh"
+	rennt als cronjob (oft, alle 5min, oder so)
+	liest alle files in incoming/
+		convertiert file in infile.raw
+		ruft cutvideo.py auf
+			macht kleine chunks
+				schreibt sie in unique filenames
+				füngt neuenchunk zu liste hinzu
+		löscht input file
+
+- "composter.py"
+	rennt permanent
+	holt sich liste an bots
+	ruft bots zyklisch aus
+
+
+
