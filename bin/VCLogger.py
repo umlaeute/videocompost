@@ -13,8 +13,11 @@ def writelog (line):
   logfile.write ("{0}: {1}\n".format (time.strftime("%a, %d %b %Y %H:%M:%S"), line))
   fcntl.flock (logfile, fcntl.LOCK_UN)
   logfile.close ()
-  if logstderr==True:
-    print line
+  try:
+    if logstderr==True:
+      print line
+  except NameError:
+    pass
 
 if __name__ == "__main__":
   if len (sys.argv) < 2:
