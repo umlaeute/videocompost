@@ -30,9 +30,9 @@ def interrupthandler (signum, frame):
 def mainLoop ():
   """
   """
-  # cycletime = 21600 # 6 hours, 4 cycles a day
+  cycletime = 21600 # 6 hours, 4 cycles a day
   # cycletime = 3600
-  cycletime = 30
+  # cycletime = 30
   signal.signal (signal.SIGTERM, interrupthandler)
   signal.signal (signal.SIGINT, interrupthandler)
   signal.signal (signal.SIGHUP, interrupthandler)
