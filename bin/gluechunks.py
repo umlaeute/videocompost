@@ -11,11 +11,17 @@ if os.path.isfile (outfilename):
 
 outfile = open (outfilename, "w")
 
+count = 0
 for chunk in compost._chunks:
   if os.path.isfile (chunk._filename):
     infile = open (chunk._filename, "r")
     outfile.write (infile.read ())
     infile.close ()
+    count += 1
+
+msg = "[gluechunks] combined {0} chunks to '{1}'".format (count, outfilename)
+print msg
+# TODO write log message
 
 # vim: tw=0 ts=2 expandtab
 # EOF
