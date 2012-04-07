@@ -27,8 +27,8 @@ if [ "x${OUTFILE}" = "x" ]; then
 fi
 
 if [ -e "${OUTFILE}" ]; then
- echo "output file \"${OUTFILE}\" already exists" 1>&2
- exit 1
+ rm ${OUTFILE}
+ echo "(old) output file \"${OUTFILE}\" removed" 1>&2
 fi
 
 FRAMESIZE=$((WIDTH * HEIGHT * 4))
