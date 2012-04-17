@@ -16,26 +16,6 @@ filelist="${basedir}/filelist.txt"
 completed="${basedir}/completed.txt"
 tmpfilelist="/tmp/tmpfilelist.txt"
 
-remove_filename_from_filelist ()
-{
-  filename=${1}
-  if [ -f ${tmpfilelist} ]
-  then
-    rm -f ${tmpfilelist}
-  fi
-
-  while read line
-  do
-    if [ "${line}" == "${filename}" ]
-    then
-      continue
-    fi
-    echo ${line} >> ${tmpfilelist}
-  done < ${filelist}
-
-  mv ${tmpfilelist} ${filelist}
-}
-
 # get the next filename to download
 current_file=$(head -n 1 ${filelist})
 filename=$(basename ${current_file})
@@ -55,6 +35,25 @@ else
   echo "${completed} not found"  
 fi
 
+remove_filename_from_filelist ()
+{
+  if [ -f ${tmpfilelist} ]
+  then
+    rm -f ${tmpfilelist}
+  fi
+
+  while read line
+  do
+    if [ "${line}" == "${current_file}" ]
+    then
+      continue
+    fi
+    echo ${line} >> ${tmpfilelist}
+  done < ${filelist}
+
+  mv ${tmpfilelist} ${filelist}
+}
+
 
 # download the video to ~/download
 # scp padma.okno.be:${current_file} ${downdir}/${filename}
@@ -64,7 +63,7 @@ fi
 
 # remove the filename from filelist.txt and add it to
 # completed.txt
-remove_filename_from_filelist ${current_file}
+remove_filename_from_filelist
 echo ${current_file} >> ${completed}
 
 # vim:  smartindent sw=2
