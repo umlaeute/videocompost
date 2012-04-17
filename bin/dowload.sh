@@ -40,10 +40,12 @@ remove_filename_from_filelist ()
 current_file=$(head -n 1 ${filelist})
 filename=$(basename ${current_file})
 
+echo "retreiving ${current_file}"
+
 # check if it was downloaded already
 if [ -f ${completed} ]
 then
-  egrep -q ${current_file} ${completed}
+  egrep -q "${current_file}" ${completed}
   if [ ${?} -eq 0 ]
   then
     echo "found ${current_file} in ${completed}"
