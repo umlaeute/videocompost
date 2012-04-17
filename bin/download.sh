@@ -26,7 +26,7 @@ remove_filename_from_filelist ()
 
   while read line
   do
-    if [ ${line} == ${filename} ]
+    if [ "${line}" == "${filename}" ]
     then
       continue
     fi
