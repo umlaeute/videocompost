@@ -16,6 +16,7 @@ logger="${basedir}/bin/VCLogger.py"
 filelist="${basedir}/filelist.txt"
 completed="${basedir}/completed.txt"
 tmpfilelist="/tmp/tmpfilelist.txt"
+spaceneeded=1500000
 
 # echo "retreiving ${current_file}"
 
@@ -25,6 +26,14 @@ get_next_filename ()
   current_file=$(head -n 1 ${filelist})
   filename=$(basename ${current_file})
 }
+
+# exit if less than ??? space is available
+typeset -i freespace=$(df | egrep rootfs | awk '{print $4}')
+if [ ${freespace} -lt ${spaceneeded} ]
+then
+  echo "sorry, ${freespace} is less than ${spaceneeded}."
+  exit 1
+fi
 
 # check if it was downloaded already
 if [ -f ${completed} ]
