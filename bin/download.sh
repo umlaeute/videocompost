@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/dash
+# am I using bashism or does dash really suck?
 
 #
 # get the next video from padma.okno.be
