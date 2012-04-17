@@ -51,6 +51,8 @@ then
     echo "found ${current_file} in ${completed}"
     exit 1
   fi
+else
+  echo "${comleted} not found"  
 fi
 
 
