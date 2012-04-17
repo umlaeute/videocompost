@@ -52,15 +52,15 @@ then
     exit 1
   fi
 else
-  echo "${comleted} not found"  
+  echo "${completed} not found"  
 fi
 
 
 # download the video to ~/download
-scp padma.okno.be:${current_file} ${downdir}/${filename}
+# scp padma.okno.be:${current_file} ${downdir}/${filename}
 
 # when done, move it to incoming
-mv ${downdir}/${filename} ${indir}
+# mv ${downdir}/${filename} ${indir}
 
 # remove the filename from filelist.txt and add it to
 # completed.txt
