@@ -13,7 +13,7 @@ indir="${basedir}/incoming"
 downdir="${basedir}/download"
 logger="${basedir}/bin/VCLogger.py"
 filelist="${basedir}/filelist.txt"
-completed="${basdir}/completed.txt"
+completed="${basedir}/completed.txt"
 tmpfilelist="/tmp/tmpfilelist.txt"
 
 remove_filename_from_filelist ()
