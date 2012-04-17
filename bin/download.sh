@@ -25,6 +25,26 @@ get_next_filename ()
   filename=$(basename ${current_file})
 }
 
+remove_filename_from_filelist ()
+{
+  if [ -f ${tmpfilelist} ]
+  then
+    rm -f ${tmpfilelist}
+  fi
+
+  while read line
+  do
+    if [ "${line}" == "${current_file}" ]
+    then
+      continue
+    else
+      echo ${line} >> ${tmpfilelist}
+    fi
+  done < ${filelist}
+
+  mv ${tmpfilelist} ${filelist}
+}
+
 # exit if less than ??? space is available
 typeset -i freespace=$(df | egrep rootfs | awk '{print $4}')
 if [ ${freespace} -lt ${spaceneeded} ]
@@ -53,26 +73,6 @@ else
   # echo "${completed} not found"
   exit 1
 fi
-
-remove_filename_from_filelist ()
-{
-  if [ -f ${tmpfilelist} ]
-  then
-    rm -f ${tmpfilelist}
-  fi
-
-  while read line
-  do
-    if [ "${line}" == "${current_file}" ]
-    then
-      continue
-    else
-      echo ${line} >> ${tmpfilelist}
-    fi
-  done < ${filelist}
-
-  mv ${tmpfilelist} ${filelist}
-}
 
 
 # download the video to ~/download
