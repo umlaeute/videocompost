@@ -24,14 +24,14 @@ remove_filename_from_filelist ()
     rm -f ${tmpfilelist}
   fi
 
-  for line in $(cat ${filelist})
+  while read line
   do
-    if [ "${line}" == "${filename}" ]
+    if [ ${line} == ${filename} ]
     then
       continue
     fi
     echo ${line} >> ${tmpfilelist}
-  done
+  done < ${filelist}
 
   mv ${tmpfilelist} ${filelist}
 }
@@ -41,12 +41,16 @@ current_file=$(head -n 1 ${filelist})
 filename=$(basename ${current_file})
 
 # check if it was downloaded already
-egrep -q ${current_file} ${completed}
-if [ ${?} -eq 0 ]
+if [ -f ${completed} ]
 then
-  echo "found ${current_file} in ${completed}"
-  exit 1
+  egrep -q ${current_file} ${completed}
+  if [ ${?} -eq 0 ]
+  then
+    echo "found ${current_file} in ${completed}"
+    exit 1
+  fi
 fi
+
 
 # download the video to ~/download
 scp padma.okno.be:${current_file} ${downdir}/${filename}
