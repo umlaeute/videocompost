@@ -18,8 +18,6 @@ completed="${basedir}/completed.txt"
 tmpfilelist="/tmp/tmpfilelist.txt"
 spaceneeded=1500000
 
-# echo "retreiving ${current_file}"
-
 get_next_filename ()
 {
   # get the next filename to download
@@ -31,7 +29,7 @@ get_next_filename ()
 typeset -i freespace=$(df | egrep rootfs | awk '{print $4}')
 if [ ${freespace} -lt ${spaceneeded} ]
 then
-  echo "sorry, ${freespace} is less than ${spaceneeded}."
+  # echo "sorry, ${freespace} is less than ${spaceneeded}."
   exit 1
 fi
 
@@ -52,7 +50,7 @@ then
     fi
   done
 else
-  echo "${completed} not found"
+  # echo "${completed} not found"
   exit 1
 fi
 
