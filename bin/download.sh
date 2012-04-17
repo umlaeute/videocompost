@@ -33,7 +33,8 @@ then
     exit 1
   fi
 else
-  echo "${completed} not found"  
+  echo "${completed} not found"
+  exit 1
 fi
 
 remove_filename_from_filelist ()
@@ -47,7 +48,7 @@ remove_filename_from_filelist ()
   do
     if [ "${line}" == "${current_file}" ]
     then
-      echo ${line} >> ${completed}
+      continue
     else
       echo ${line} >> ${tmpfilelist}
     fi
@@ -63,8 +64,11 @@ scp padma.okno.be:${current_file} ${downdir}/${filename}
 # when done, move it to incoming
 mv ${downdir}/${filename} ${indir}
 
-# remove the filename from filelist.txt and add it to
-# completed.txt
+# remove the filename from filelist.txt
 remove_filename_from_filelist
 
+# add it to completed.txt
+echo ${current_file} >> ${completed}
+
+exit 0
 # vim:  smartindent sw=2
