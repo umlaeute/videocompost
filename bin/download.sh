@@ -46,9 +46,10 @@ remove_filename_from_filelist ()
   do
     if [ "${line}" == "${current_file}" ]
     then
-      continue
+      echo ${line} >> ${completed}
+    else
+      echo ${line} >> ${tmpfilelist}
     fi
-    echo ${line} >> ${tmpfilelist}
   done < ${filelist}
 
   mv ${tmpfilelist} ${filelist}
@@ -64,6 +65,5 @@ remove_filename_from_filelist ()
 # remove the filename from filelist.txt and add it to
 # completed.txt
 remove_filename_from_filelist
-echo ${current_file} >> ${completed}
 
 # vim:  smartindent sw=2
