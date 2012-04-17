@@ -57,7 +57,7 @@ fi
 if [ -f ${completed} ]
 then
   found=1
-  set_filename
+  get_next_filename
   while [ ${found} -eq 1 ]
   do
     egrep -q "${current_file}" ${completed}
