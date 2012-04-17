@@ -17,21 +17,31 @@ filelist="${basedir}/filelist.txt"
 completed="${basedir}/completed.txt"
 tmpfilelist="/tmp/tmpfilelist.txt"
 
-# get the next filename to download
-current_file=$(head -n 1 ${filelist})
-filename=$(basename ${current_file})
+# echo "retreiving ${current_file}"
 
-echo "retreiving ${current_file}"
+get_next_filename ()
+{
+  # get the next filename to download
+  current_file=$(head -n 1 ${filelist})
+  filename=$(basename ${current_file})
+}
 
 # check if it was downloaded already
 if [ -f ${completed} ]
 then
-  egrep -q "${current_file}" ${completed}
-  if [ ${?} -eq 0 ]
-  then
-    echo "found ${current_file} in ${completed}"
-    exit 1
-  fi
+  found=1
+  set_filename
+  while [ ${found} -eq 1 ]
+  do
+    egrep -q "${current_file}" ${completed}
+    if [ ${?} -eq 0 ]
+    then
+      remove_filename_from_filelist
+      get_next_filename
+    else
+      found=0
+    fi
+  done
 else
   echo "${completed} not found"
   exit 1
