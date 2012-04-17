@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/bash
 # am I using bashism or does dash really suck?
 
 #
@@ -58,10 +58,10 @@ remove_filename_from_filelist ()
 
 
 # download the video to ~/download
-# scp padma.okno.be:${current_file} ${downdir}/${filename}
+scp padma.okno.be:${current_file} ${downdir}/${filename}
 
 # when done, move it to incoming
-# mv ${downdir}/${filename} ${indir}
+mv ${downdir}/${filename} ${indir}
 
 # remove the filename from filelist.txt and add it to
 # completed.txt
