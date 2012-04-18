@@ -24,7 +24,7 @@ get_next_filename ()
   # get the next filename to download
   lines=$(wc -l ${filelist} | awk '{print $1}')
   index=$($randint lines)
-  current_file=$(head -n ${lines} ${filelist} | tail -n 1)
+  current_file=$(head -n ${index} ${filelist} | tail -n 1)
   filename=$(basename ${current_file})
 }
 
@@ -56,7 +56,7 @@ then
   exit 1
 fi
 
-if [ ${1} == "test" ]
+if [ ${1} ] && [ ${1} == "test" ]
 then
   get_next_filename
   echo "would download ${current_file}"
