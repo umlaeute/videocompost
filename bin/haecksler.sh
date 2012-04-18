@@ -27,8 +27,8 @@ do
 
   if [ -f ${infile} ]
   then
-    ${logger} "[haecksler]: importing ${video}"
     # convert it to .raw format
+    ${logger} "[haecksler]: importing ${video}"
     ./bin/video2raw.sh ${infile} infile.raw
     
     # cut it to pieces and add it to compost
@@ -36,6 +36,7 @@ do
     
     # remove video from incoming
     rm -f ${infile}
+    ${logger} "[haecksler]: finished importing ${video}"
   fi
 done
 
