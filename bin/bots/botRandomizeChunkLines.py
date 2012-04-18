@@ -65,6 +65,7 @@ def runMe ():
         line = compost._map[line1index:(line1index+randlength)]
         compost._map[line1index:(line1index+randlength)] = compost._map[line2index:(line2index+randlength)]
         compost._map[line2index:(line2index+randlength)] = line
+        compost.addEntropy (randlength)
       
       config["chunk"] = chunk
       saveConfig ()
