@@ -10,7 +10,7 @@ lockfile="${basedir}/run/snapshot"
 snapshots="${basedir}/snapshots"
 rawvideo="${basedir}/video.raw"
 oggvideo="${basedir}/video.ogv"
-snapshot="${snapshots}/$(date +%Y%m%d).ogv"
+snapshot="${snapshots}/$(date +%Y%m%d%H%M).ogv"
 link2current="${snapshots}/snapshot.ogv"
 
 # exit if a lockfile is present
