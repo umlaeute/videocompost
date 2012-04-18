@@ -59,6 +59,7 @@ def runMe ():
     while chunk2 == chunk1:
       chunk2 = random.randint(0, len (compost._chunks))
     compost.mapChunk(chunk1)
+    # this try: clause can be deleted I guess
     try:
       frameindex = random.randint(0, len (compost._map) / size)
     except TypeError:
@@ -67,6 +68,7 @@ def runMe ():
     compost.mapChunk(chunk2)
     frameindex = random.randint(0, len (compost._map) / size)
     compost._map[frameindex:(frameindex+size)]=frame
+    compost.addEntropy (frameindex)
     saveConfig ()
   except BotError as e:
     writelog ("{0} caught exception {1}.  Exiting".format (__name__, e.msg))
