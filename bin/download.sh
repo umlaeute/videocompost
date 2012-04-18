@@ -16,12 +16,15 @@ logger="${basedir}/bin/VCLogger.py"
 filelist="${basedir}/filelist.txt"
 completed="${basedir}/completed.txt"
 tmpfilelist="/tmp/tmpfilelist.txt"
+randint="${basedir}/bin/RandInt.py"
 spaceneeded=1500000
 
 get_next_filename ()
 {
   # get the next filename to download
-  current_file=$(head -n 1 ${filelist})
+  lines=$(wc -l ${filelist})
+  index=$($randint lines)
+  current_file=$(head -n ${lines} ${filelist} | tail -n 1)
   filename=$(basename ${current_file})
 }
 
@@ -51,6 +54,13 @@ if [ ${freespace} -lt ${spaceneeded} ]
 then
   # echo "sorry, ${freespace} is less than ${spaceneeded}."
   exit 1
+fi
+
+if [ ${1} == "test" ]
+then
+  get_next_filename
+  echo "would download ${current_file}"
+  exit 0
 fi
 
 # check if it was downloaded already
