@@ -46,7 +46,11 @@ rm ${link2current}
 # link video to snapshot.ogv
 ln -s ${snapshot} ${link2current}
 
+# remove the raw video file
+rm -f ${rawvideo}
+
 # remove lockfile
 rm -f ${lockfile}
+
 # vim: ts=2 tw=0 expandtab sw=2
 # EOF
