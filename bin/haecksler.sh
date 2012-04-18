@@ -15,7 +15,7 @@ then
   ${logger} "[haecksler]: lockfile present.  exiting."
   exit 0
 fi
-touch ${lockfile}
+echo ${BASHPID} > ${lockfile}
 
 # work in basedir
 cd ${basedir}
