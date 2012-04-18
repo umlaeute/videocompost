@@ -22,7 +22,7 @@ spaceneeded=1500000
 get_next_filename ()
 {
   # get the next filename to download
-  lines=$(wc -l ${filelist})
+  lines=$(wc -l ${filelist} | awk '{print $1}')
   index=$($randint lines)
   current_file=$(head -n ${lines} ${filelist} | tail -n 1)
   filename=$(basename ${current_file})
