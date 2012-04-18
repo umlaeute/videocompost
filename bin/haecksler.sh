@@ -7,7 +7,7 @@ group="kompost"
 basedir="/home/${user}"
 indir="${basedir}/incoming"
 logger="${basedir}/bin/VCLogger.py"
-lockfile="${basedir}/run/hacksler.lock"
+lockfile="${basedir}/run/haecksler.lock"
 
 # exit if a lockfile is present
 if [ -f ${lockfile} ]
@@ -38,8 +38,8 @@ do
     rm -f ${infile}
   fi
 done
-${logger} "[haecksler]: prepared video '${infile}' for composting."
 
 rm -f ${lockfile}
+
 # vim: ts=2 tw=0 expandtab
 # EOF
