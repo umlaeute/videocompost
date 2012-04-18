@@ -46,9 +46,9 @@ def runMe ():
   loadConfig ()
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
+  writelog ("{0} started".format (__name__))
   try:
     for chunk in range (config["chunk"], len (compost._chunks)):
-      writelog ("{0} working on chunk {1} byte {2}".format (__name__, chunk, config["byte"]))
       compost.mapChunk (chunk)
       for byte in range (config["byte"], len (compost._map), 4):
         green = ord (compost._map[byte])
@@ -63,14 +63,12 @@ def runMe ():
       config["byte"] = 2
       saveConfig ()
   except BotError as e:
-    writelog ("{0} caught exception {1}.  Exiting".format (__name__, e.msg))
     config["chunk"] = chunk
     config["byte"] = byte
     saveConfig ()
     writelog ("{0} caught exception {1}.  Wrote {2} chunks and {3} bytes to config".format (__name__, e.msg, chunk, byte))
     return 0
 
-  # print "{0} has done one cyle. resetting config".format (__name__)
   config["chunk"] = 0
   config["byte"] = 2
   saveConfig ()
