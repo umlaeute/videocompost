@@ -38,6 +38,7 @@ do
     rm -f ${infile}
   fi
 done
+${logger} "[haecksler]: prepared video '${infile}' for composting."
 
 rm -f ${lockfile}
 # vim: ts=2 tw=0 expandtab
