@@ -140,7 +140,7 @@ class Compost:
     self._map.seek (self._entropy)
     randdev.write (self._map.read (512))
     self._map.seek (0)
-    writelog ("[Compost]:  wrote 512 bytes from chunk {0} starting at {1} to /dev/urandom".format (self._chunk._index, self._entropy))
+    # writelog ("[Compost]:  wrote 512 bytes from chunk {0} starting at {1} to /dev/urandom".format (self._chunk._index, self._entropy))
     randdev.close ()
     self._entropy = 0
 
