@@ -87,6 +87,7 @@ def runMe ():
         startpixel += framesize * i
         for pixel in range (startpixel, startpixel + length * 320, 320):
           compost.setPixelColor (pixel, [255, 255, 255])
+      compost.AddEntropy (startpixel + (length * duration))
       del length
       del duration
       del startpixel
