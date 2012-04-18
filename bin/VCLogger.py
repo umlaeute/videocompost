@@ -27,5 +27,5 @@ if __name__ == "__main__":
     line = "{0}{1} ".format (line, sys.argv[i])
   writelog (line)
 
-# vim: ts=2 tw=0 expantab
+# vim: ts=2 tw=0 expandtab sw=2
 # EOF
