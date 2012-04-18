@@ -9,9 +9,9 @@ logger="${basedir}/bin/VCLogger.py"
 lockfile="${basedir}/run/snapshot"
 snapshots="${basedir}/snapshots"
 rawvideo="${basedir}/video.raw"
-oggvideo="${basedir}/video.ogg"
-snapshot="${snapshots}/$(date +%Y%M%D).ogv"
-current="${snapshots}/snapshot.ogv"
+oggvideo="${basedir}/video.ogv"
+snapshot="${snapshots}/$(date +%Y%m%d).ogv"
+link2current="${snapshots}/snapshot.ogv"
 
 # exit if a lockfile is present
 if [ -f ${lockfile} ]
@@ -41,10 +41,10 @@ cd ${basedir}
 mv ${oggvideo} ${snapshot}
 
 # remove old link snapshot.ogv
-rm ${current}
+rm ${link2current}
 
 # link video to snapshot.ogv
-ln -s ${snapshot} ${current}
+ln -s ${snapshot} ${link2current}
 
 # remove lockfile
 rm -f ${lockfile}
