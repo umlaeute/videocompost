@@ -76,9 +76,9 @@ def mainLoop ():
         writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after interrupt".format (b, pid, rv))
         os.remove (pidfilename)
         return 0
-  writelog ("[composter]:  Don't know how I got here ...")
+  writelog ("[composter]:  Loop terminated abnormally.")
   os.remove (pidfilename)
-  return 0
+  return 1
 
 if __name__ == "__main__":
   sys.exit (mainLoop ())
