@@ -18,6 +18,7 @@ class Compost:
 
   def __init__ (self):
     self._filename = os.path.join (configdir, "Compost.pck")
+    self._compost_lock_name = os.path.join (rundir, "Compost.lock")
     if os.path.isfile (self._filename):
       self._filetime = os.stat (self._filename).st_ctime
       self.load ()
@@ -51,17 +52,27 @@ class Compost:
     self.save ()
 
   def save (self):
+    self.lockCompost ()
     picklefile = open (self._filename, "w")
-    fcntl.flock (picklefile, fcntl.LOCK_EX)
     pickle.dump (self._chunks, picklefile)
-    fcntl.flock (picklefile, fcntl.LOCK_UN)
     picklefile.close ()
+    self.unlockCompost ()
 
   def load (self):
+    self.lockCompost ()
     picklefile = open (self._filename, "r")
-    fcntl.flock (picklefile, fcntl.LOCK_EX)
     self._chunks = pickle.load (picklefile)
-    fcntl.flock (picklefile, fcntl.LOCK_UN)
+    self.unlockCompost ()
+
+  def lockCompost (self):
+    while os.path.isfile (self._compost_lock_name):
+      time.sleep (1)
+    self._compost_lock_file = open (self._compost_lock_name, "a").write ("locked")
+    self._compost_lock_file.close ()
+
+  def unlockCompost (self):
+    if os.path.isfile (self._compost_lock_name):
+      os.unlink (self._compost_lock_name)
 
   def update (self):
     self._bytes = 0
