@@ -42,7 +42,7 @@ while True:
   # print "wrote chunk #%4d with name %s" % (chunknum, chunkfilename)
   chunknum += 1
 
-writelog ("[cutvideo] added {0} chunks to compost.".format (chunknum))
+writelog ("[cutvideo] added {0} chunks from {1} to compost.".format (chunknum, infilename))
 os.remove (infilename)
 compost.save ()
 # compost.show ()
