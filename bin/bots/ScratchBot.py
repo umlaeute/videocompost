@@ -71,7 +71,7 @@ def runMe ():
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
 
-  writelog ("[{0}] leaving {1} scratches in video".format (
+  writelog ("[{0}]: starting to make {1} scratches in video".format (
     __name__, len (compost._chunks)))
 
   # loop over the number of chunks available
