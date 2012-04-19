@@ -67,7 +67,8 @@ class Compost:
   def lockCompost (self):
     while os.path.isfile (self._compost_lock_name):
       time.sleep (1)
-    self._compost_lock_file = open (self._compost_lock_name, "a").write ("locked")
+    self._compost_lock_file = open (self._compost_lock_name, "a")
+    self._compost_lock_file.write ("locked")
     self._compost_lock_file.close ()
 
   def unlockCompost (self):
