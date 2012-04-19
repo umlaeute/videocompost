@@ -77,7 +77,7 @@ def runMe ():
   # loop over the number of chunks available
   for chunk in range (0, len (compost._chunks)):
     try:
-      loadConfig ()
+      # loadConfig ()
       framesize = 76800
       random.seed ()
       length = random.randint (5, 120)
@@ -91,10 +91,10 @@ def runMe ():
       del length
       del duration
       del startpixel
-      saveConfig ()
+      # saveConfig ()
 
     except BotError as e:
-      saveConfig ()
+      # saveConfig ()
       return 0
 
   """
