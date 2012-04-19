@@ -54,9 +54,10 @@ def runMe ():
   loadConfig ()
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
+  writelog ("[{0}]: working startd".format (__name__))
   try:
     for chunk in range (config["chunk"], len (compost._chunks)):
-      writelog ("{0} working on chunk {1}".format (__name__, chunk))
+      # writelog ("{0} working on chunk {1}".format (__name__, chunk))
       compost.mapChunk (chunk)
       for frame in range (0, len (compost._map) / size):
         randlength=random.randint(0, wsize/4)
