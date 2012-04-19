@@ -12,7 +12,7 @@ import sys
 import os
 from Compost import Compost
 from vcconfig import *
-from VCLogger import *
+from VCLogger import writelog
 
 if os.path.isfile (infilename):
   infile = open (infilename, "r")
