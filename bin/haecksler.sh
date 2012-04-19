@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # add videos in incoming to compost
 
