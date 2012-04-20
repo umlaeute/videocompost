@@ -46,7 +46,8 @@ def runMe ():
   loadConfig ()
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
-  writelog ("[{0}]: started".format (__name__))
+  writelog ("[{0}]: starting to work on chunk {1} at byte {2}".format (
+    __name__, config["chunk"], config["byte"]))
   try:
     for chunk in range (config["chunk"], len (compost._chunks)):
       compost.mapChunk (chunk)
@@ -66,7 +67,8 @@ def runMe ():
     config["chunk"] = chunk
     config["byte"] = byte
     saveConfig ()
-    writelog ("[{0}]: caught exception {1}.  Wrote {2} chunks and {3} bytes to config".format (__name__, e.msg, chunk, byte))
+    writelog ("[{0}]: caught exception {1}.  Saving chunk {2} at byte {3} for next run".format (
+      __name__, e.msg, chunk, byte))
     return 0
 
   config["chunk"] = 0
