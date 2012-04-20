@@ -53,6 +53,8 @@ def runMe ():
   loadConfig ()
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
+  writelog ("[{0}]: started".format (__name__))
+
   try:
     chunk1 = random.randint(0, len (compost._chunks))
     chunk2 = chunk1
@@ -63,7 +65,7 @@ def runMe ():
     try:
       frameindex = random.randint(0, len (compost._map) / size)
     except TypeError:
-      writelog ("{0} caught exception.  for chunk {1}".format (__name__, chunk1))
+      writelog ("[{0}]: caught exception.  for chunk {1}".format (__name__, chunk1))
     frame = compost._map[frameindex:(frameindex+size)]
     compost.mapChunk(chunk2)
     frameindex = random.randint(0, len (compost._map) / size)
@@ -71,9 +73,9 @@ def runMe ():
     compost.addEntropy (frameindex)
     saveConfig ()
   except BotError as e:
-    writelog ("{0} caught exception {1}.  Exiting".format (__name__, e.msg))
+    writelog ("[{0}]: caught exception {1}.  Exiting".format (__name__, e.msg))
     saveConfig ()
-    writelog ("{0} caught exception {1}.  Wrote {2} chunks and {3} bytes to config".format (__name__, e.msg, chunk, byte))
+    writelog ("[{0}]: caught exception {1}.  Wrote {2} chunks and {3} bytes to config".format (__name__, e.msg, chunk, byte))
     return 0
 
   # print "{0} has done one cyle. resetting config".format (__name__)
