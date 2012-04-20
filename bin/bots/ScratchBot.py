@@ -23,7 +23,7 @@ Adapt config to your needs.  Use loadConfig () and saveConfig ()
 to store data across runs.
 """
 config = {}
-config["myname"] = __name__
+config["name"] = __name__
 
 """
 create an instance of Compost to access video data
@@ -51,7 +51,11 @@ def loadConfig ():
   filename = os.path.join (configdir, "%s.config" % __name__)
   if os.path.isfile (filename):
     infile = open (filename, "r")
-    config = pickle.load (infile)
+    try:
+      config = pickle.load (infile)
+    except:
+      config["name"] = __name__
+      config["chunk"] = 0
     infile.close ()
 
 def saveConfig ():
@@ -79,13 +83,16 @@ def runMe ():
   min_duration = 1     # lasts for 1 frame
   max_duration = 125   # lasts for 125 frames
 
-  writelog ("[{0}]: starting to make {1} scratches in video".format (
-    __name__, len (compost._chunks)))
+  loadConfig ()
+  writelog ("[{0}]: starting to make {1} scratches in video starting at chunk {2}".format (
+    __name__, len (compost._chunks), config["chunk"]))
+
 
   # loop over the number of chunks available
   for chunk in range (0, len (compost._chunks)):
+    if chunk < config["chunk"]:
+      chunk = config["chunk"]
     try:
-      # loadConfig ()
       random.seed ()
       length = random.randint (min_length, max_length)
       duration = random.randint (min_duration, max_duration)
@@ -98,11 +105,14 @@ def runMe ():
       del length
       del duration
       del startpixel
-      # saveConfig ()
 
     except BotError as e:
-      # saveConfig ()
+      config["chunk"] = chunk
+      saveConfig ()
       return 0
+
+  config["chunk"] = 0
+  saveConfig ()
 
   """
   return a number != 0 to indicate an error to composter.py
