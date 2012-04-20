@@ -1,6 +1,6 @@
 """
 this bot draws random squares of the same color somewhere in the video.
-color is picked from one of the pixels
+color is picked by the first pixel the square touches (upper left hand corner).
 """
 
 """
@@ -117,9 +117,8 @@ def runMe ():
       # first byte of square
       start_byte = (frame_pixel + frame_size * start_frame) * bytes_per_pixel
 
-      # get a random pixel color from somewhere in the frame
-      color_index = (random.randint (0, map_length - bytes_per_pixel) / bytes_per_pixel) * bytes_per_pixel
-      pixel_color = compost._map [color_index:color_index + bytes_per_pixel]
+      # save this pixels color
+      pixel_color = compost._map [start_byte:start_byte + bytes_per_pixel]
       compost.addEntropy (start_byte)
 
       for f in range (0, affected_frames):
@@ -131,8 +130,10 @@ def runMe ():
             try:
               compost._map[start:start + bytes_per_pixel] = pixel_color
             except IndexError:
-              print 'Exception: square_width={0}, affected_frames={1}, start_byte={2}, start_frame={3}, map_length={4}, frameoffset={5}, lineoffset={6}'.format (
-                square_width, affected_frames, start_byte, start_frame, map_length, frameoffset, lineoffset)
+              writelog (
+                'Exception: square_width={0}, affected_frames={1}, start_byte={2}, start_frame={3}, map_length={4}, frameoffset={5}, lineoffset={6}'.format (
+                square_width, affected_frames, start_byte, start_frame, map_length, frameoffset, lineoffset))
+              break
 
     config["chunk"] = 0
     saveConfig ()
