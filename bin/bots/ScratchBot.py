@@ -71,6 +71,14 @@ def runMe ():
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
 
+  frame_size = 76800
+  frame_width = 320
+  white = 255
+  min_length = 5       # shortest scratch
+  max_length = 120     # longest scratch
+  min_duration = 1     # lasts for 1 frame
+  max_duration = 125   # lasts for 125 frames
+
   writelog ("[{0}]: starting to make {1} scratches in video".format (
     __name__, len (compost._chunks)))
 
@@ -78,15 +86,14 @@ def runMe ():
   for chunk in range (0, len (compost._chunks)):
     try:
       # loadConfig ()
-      framesize = 76800
       random.seed ()
-      length = random.randint (5, 120)
-      duration = random.randint (1, 125)
+      length = random.randint (min_length, max_length)
+      duration = random.randint (min_duration, max_duration)
       startpixel = random.randint (0, compost._pixels - length)
       for i in range (0, duration):
-        startpixel += framesize * i
-        for pixel in range (startpixel, startpixel + length * 320, 320):
-          compost.setPixelColor (pixel, [255, 255, 255])
+        startpixel += frame_size * i
+        for pixel in range (startpixel, startpixel + length * frame_width, frame_width):
+          compost.setPixelColor (pixel, [white, white, white])
       compost.addEntropy (startpixel + (length * duration))
       del length
       del duration
