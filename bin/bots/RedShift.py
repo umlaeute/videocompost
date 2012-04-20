@@ -49,7 +49,9 @@ def runMe ():
   writelog ("[{0}]: starting to work on chunk {1} at byte {2}".format (
     __name__, config["chunk"], config["byte"]))
   try:
-    for chunk in range (config["chunk"], len (compost._chunks)):
+    for chunk in range (0, len (compost._chunks)):
+      if chunk < config["chunk"]:
+        chunk = config["chunk"]
       compost.mapChunk (chunk)
       for byte in range (config["byte"], len (compost._map), 4):
         green = ord (compost._map[byte])
@@ -60,9 +62,11 @@ def runMe ():
         if blue > 0:
           compost._map[byte+1] = chr (blue - 1)
           compost.addEntropy (blue - 1)
-      config["chunk"] = chunk
-      config["byte"] = 2
-      saveConfig ()
+
+    # for the next run
+    config["chunk"] = 0
+    saveConfig ()
+
   except BotError as e:
     config["chunk"] = chunk
     config["byte"] = byte
