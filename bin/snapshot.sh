@@ -10,7 +10,8 @@ lockfile="${basedir}/run/snapshot.lock"
 snapshots="${basedir}/snapshots"
 rawvideo="${basedir}/video.raw"
 oggvideo="${basedir}/video.ogv"
-snapshot="${snapshots}/$(date +%Y%m%d%H%M).ogv"
+timestamp=$(date +%Y%m%d%H%M)
+snapshot="${snapshots}/${timestamp}.ogv"
 link2current="${snapshots}/snapshot.ogv"
 
 # exit if a lockfile is present
@@ -27,6 +28,8 @@ if ! [ -d ${snapshots} ]
 then
   mkdir ${snapshots}
 fi
+
+${logger} "[snapshot]: starting ${snapshot}"
 
 # work in basedir
 cd ${basedir}
@@ -51,6 +54,8 @@ rm -f ${rawvideo}
 
 # remove lockfile
 rm -f ${lockfile}
+
+${logger} "[snapshot]: finished ${snapshot}"
 
 # vim: ts=2 tw=0 expandtab sw=2
 # EOF
