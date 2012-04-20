@@ -29,15 +29,15 @@ then
   mkdir ${snapshots}
 fi
 
-${logger} "[snapshot]: starting ${snapshot}"
-
 # work in basedir
 cd ${basedir}
 
 # glue chunks to get one raw video file
+${logger} "[snapshot]: glueing ${snapshot}"
 ./bin/gluechunks.py
 
 # encode raw video to ogg video
+${logger} "[snapshot]: encoding ${snapshot}"
 ./bin/raw2video.sh ${rawvideo} ${oggvideo}
 
 # move video to snapshots directory
