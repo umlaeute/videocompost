@@ -87,7 +87,6 @@ to store data across runs.
 """
 config = {}
 config["myname"] = __name__
-config["counter"] = 0
 
 """
 create an instance of Compost to access video data
@@ -112,7 +111,7 @@ def loadConfig ():
   load config from file if available
   """
   global config
-  filename = os.path.join (configdir, "%s.config" % __name__)
+  filename = os.path.join (configdir, "{0}.config".format (__name__))
   if os.path.isfile (filename):
     infile = open (filename, "r")
     config = pickle.load (infile)
@@ -123,7 +122,7 @@ def saveConfig ():
   store config to file
   """
   global config
-  filename = os.path.join (configdir, "%s.config" % __name__)
+  filename = os.path.join (configdir, "{0}.config".format (__name__))
   outfile = open (filename, "w")
   pickle.dump (config, outfile)
   outfile.close ()
@@ -134,13 +133,13 @@ def runMe ():
   """
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
+
   try:
     """
     your code here
     """
     loadConfig ()
-    writelog ("[{0}] counting {1}".format (__name__, config["counter"]))
-    config["counter"] += 1
+    writelog ("[{0}]: started".format (__name__))
     saveConfig ()
 
   except BotError as e:
