@@ -119,6 +119,8 @@ def runMe ():
 
       # save this pixels color
       pixel_color = compost._map [start_byte:start_byte + bytes_per_pixel]
+
+      # return some bits for RNG
       compost.addEntropy (start_byte)
 
       for f in range (0, affected_frames):
