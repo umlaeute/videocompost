@@ -2,6 +2,7 @@
 
 import os
 import mmap
+from VCLogger import writelog
 
 class Chunk:
 
@@ -25,22 +26,33 @@ class Chunk:
       return False
     try:
       self._map = mmap.mmap (chunk.fileno (), 0)
-      # print "Chunk:  _mapped %d" % self._index
       return True
     except IOError:
       return False
 
   def closeChunk (self):
     if self._map:
-      # print "Chunk:  closed %d" % self._index
       self._map.flush ()
       self._map.close ()
       self._map = None
 
+  def updateChunk (self):
+    if self._map:
+      self._bytes = len (self._map)
+      self._frames = self._bytes / (320 * 240 * 4)
+      self._pixels = self._bytes / 4
+
   def showChunk (self):
-    print "Chunk _index %4d\nFilename %s\nFrames %4d-%4d\nPixels %8d-%8d\n%d Bytes\n---\n" % (
+    print "Chunk _index %4d\nFilename %s\nFrames %4d-%4d (%2d)\nPixels %8d-%8d\n%d Bytes\n---\n" % (
       self._index, self._filename, self._firstframe, (self._firstframe + self._frames - 1),
-      self._firstpixel, self._lastpixel, self._bytes)
+      self._frames, self._firstpixel, self._lastpixel, self._bytes)
+
+  def dropLastFrame (self):
+    if self._frames > 16:
+      self._map.resize ((self._frames - 1) * 320 * 240 * 4)
+      self.updateChunk ()
+      # writelog ('[Chunk]: dropped last frame from {0};  {1} frames left'.format (self._index, self._frames))
+    self.closeChunk ()
 
 # vim: tw=0 ts=2 expandtab
 # EOF

@@ -9,6 +9,7 @@ import signal
 from BotList import BotList
 from vcconfig import *
 from VCLogger import writelog
+from Compost import Compost
 
 class VCError (Exception):
   pass
@@ -66,6 +67,10 @@ def mainLoop ():
             os.kill (pid, signal.SIGHUP)
             rv = os.waitpid (pid, 0)
             writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after timeout".format (b, pid, rv))
+        compost = Compost ()
+        compost.dropFrames ()
+        del compost
+
       except ImportError:
         writelog ("[composter]:  Error importing {0}[.py]".format (b))
       except SyntaxError:

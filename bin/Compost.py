@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from random import randint
+import random
 import pickle
 import fcntl
 import os
@@ -44,8 +44,8 @@ class Compost:
       return
     chunk = Chunk (filename)
     if len (self._chunks) > 1:
-      index = randint (0, len (self._chunks))
-      self._chunks.insert (index, chunk)
+      random.seed ()
+      self._chunks.insert (random.randint (0, len (self._chunks)), chunk)
     else:
       self._chunks.append (chunk)
     self.update ()
@@ -174,6 +174,14 @@ class Compost:
   def show (self):
     for chunk in self._chunks:
       chunk.showChunk ()
+    print 'totals\nframes: {0}\nbytes: {1}\npixels: {2}'.format (self._frames, self._bytes, self._pixels)
+
+  def dropFrames (self):
+    for index in range (random.randint (0, 9), len (self._chunks), random.randint (6, 12)):
+      self.mapChunk (index)
+      self._chunk.dropLastFrame ()
+    self.update ()
+    self.save ()
 
 def runcmd (cmd):
   compost = Compost ()
