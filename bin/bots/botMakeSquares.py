@@ -118,24 +118,31 @@ def runMe ():
       start_byte = (frame_pixel + frame_size * start_frame) * bytes_per_pixel
 
       # save this pixels color
-      pixel_color = compost._map [start_byte:start_byte + bytes_per_pixel]
+      pixel_color = compost._map[start_byte:start_byte + bytes_per_pixel]
 
       # return some bits for RNG
       compost.addEntropy (start_byte)
 
+      # repeat pixel_color for the first square line
+      for w in range (0, square_width):
+        start = start_byte + w * bytes_per_pixel
+        compost._map[start:start + bytes_per_pixel] = pixel_color
+
+      # save this line
+      square_line = compost._map[start_byte:start_byte + square_width * bytes_per_pixel]
+
+      # repeat this line square_width * affected_frames times
       for f in range (0, affected_frames):
         frameoffset = f * frame_size * bytes_per_pixel
         for h in range (0, square_width):
-          lineoffset = start_byte + frameoffset + h * width * bytes_per_pixel
-          for w in range (0, square_width):
-            start = lineoffset + w * bytes_per_pixel
-            try:
-              compost._map[start:start + bytes_per_pixel] = pixel_color
-            except IndexError:
-              writelog (
-                'Exception: square_width={0}, affected_frames={1}, start_byte={2}, start_frame={3}, map_length={4}, frameoffset={5}, lineoffset={6}'.format (
-                square_width, affected_frames, start_byte, start_frame, map_length, frameoffset, lineoffset))
-              break
+          start = start_byte + frameoffset + h * width * bytes_per_pixel
+          try:
+            compost._map[start:start + square_width * bytes_per_pixel] = square_line
+          except IndexError:
+            writelog (
+              'Exception: square_width={0}, affected_frames={1}, start_byte={2}, start_frame={3}, map_length={4}, frameoffset={5}, lineoffset={6}'.format (
+              square_width, affected_frames, start_byte, start_frame, map_length, frameoffset, lineoffset))
+            break
 
     config["chunk"] = 0
     saveConfig ()
