@@ -8,7 +8,7 @@ class Chunk:
   def __init__ (self, filename):
     self._filename = filename
     self._bytes = os.stat (self._filename).st_size
-    self._frames = self._bytes / 307200
+    self._frames = self._bytes / (320 * 240 * 4)
     self._pixels = self._bytes / 4
     self._index = -1
     self._firstframe = 0
