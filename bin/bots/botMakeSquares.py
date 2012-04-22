@@ -99,10 +99,10 @@ def runMe ():
       if num_frames <= 5:
         affected_frames = num_frames
       else:
-        if num_frames <= 50:
+        if num_frames <= 30:
           max_affected_frames = num_frames
         else:
-          max_affected_frames = 50
+          max_affected_frames = 30
         affected_frames = random.randint (5, max_affected_frames)
 
       # width of a square
