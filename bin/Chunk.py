@@ -37,10 +37,9 @@ class Chunk:
       self._map = None
 
   def updateChunk (self):
-    if self._map:
-      self._bytes = len (self._map)
-      self._frames = self._bytes / (320 * 240 * 4)
-      self._pixels = self._bytes / 4
+    self._bytes = os.stat (self._filename).st_size
+    self._frames = self._bytes / (320 * 240 * 4)
+    self._pixels = self._bytes / 4
 
   def showChunk (self):
     print "Chunk _index %4d\nFilename %s\nFrames %4d-%4d (%2d)\nPixels %8d-%8d\n%d Bytes\n---\n" % (

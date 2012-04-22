@@ -83,7 +83,6 @@ class Compost:
     self._pixels = 0
     _frames = 0
     for i in range (0, len (self._chunks)):
-      self.mapChunk (i)
       self._chunks[i].updateChunk ()
       self._bytes += self._chunks[i]._bytes
       self._pixels += self._chunks[i]._pixels
