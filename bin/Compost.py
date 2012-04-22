@@ -83,6 +83,8 @@ class Compost:
     self._pixels = 0
     _frames = 0
     for i in range (0, len (self._chunks)):
+      self.mapChunk (i)
+      self._chunks[i].update ()
       self._bytes += self._chunks[i]._bytes
       self._pixels += self._chunks[i]._pixels
       if i is not 0:
@@ -194,6 +196,8 @@ def runcmd (cmd):
     return 0
   if cmd == "delete":
     compost.delete ()
+    return 0
+  if cmd == "":
     return 0
   print ">> Unknown command '{0}'".format (cmd)
   return 0
