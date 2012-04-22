@@ -55,6 +55,8 @@ class Compost:
     self.lockCompost ()
     picklefile = open (self._filename, "w")
     pickle.dump (self._chunks, picklefile)
+    picklefile.flush ()
+    os.fsync (picklefile.fileno ())
     picklefile.close ()
     self.unlockCompost ()
 
