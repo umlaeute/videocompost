@@ -188,9 +188,7 @@ class Compost:
     self.update ()
     self.save ()
 
-def runcmd (cmd):
-  compost = Compost ()
-
+def runcmd (cmd, compost):
   if cmd == "show":
     compost.show ()
     return 0
@@ -204,10 +202,14 @@ def runcmd (cmd):
 
 def cmdline ():
   print "VideoCompost command line interface.  Type ctrl-d to exit."
+  print "loading compost ..."
+
+  compost = Compost ()
+
   while True:
     try:
       cmd = raw_input ("<< ")
-      runcmd (cmd)
+      runcmd (cmd, compost)
     except EOFError:
       print "Exiting ..."
       return 0
