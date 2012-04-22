@@ -67,12 +67,6 @@ def mainLoop ():
             os.kill (pid, signal.SIGHUP)
             rv = os.waitpid (pid, 0)
             writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after timeout".format (b, pid, rv))
-        compost = Compost ()
-        compost.dropFrames ()
-        writelog ('[composter]: finished cycle.  Compost info: chunks={0}, frames={1}, bytes={2}, pixels={3}'.format (
-          len (compost._chunks), compost._frames, compost._bytes, compost._pixels))
-        del compost
-
       except ImportError:
         writelog ("[composter]:  Error importing {0}[.py]".format (b))
       except SyntaxError:
@@ -83,6 +77,13 @@ def mainLoop ():
         writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after interrupt".format (b, pid, rv))
         os.remove (pidfilename)
         return 0
+
+    compost = Compost ()
+    compost.dropFrames ()
+    writelog ('[composter]: finished cycle.  Compost info: chunks={0}, frames={1}, bytes={2}, pixels={3}'.format (
+      len (compost._chunks), compost._frames, compost._bytes, compost._pixels))
+    del compost
+
   writelog ("[composter]:  Loop terminated abnormally.")
   os.remove (pidfilename)
   return 1
