@@ -69,6 +69,8 @@ def mainLoop ():
             writelog ("[composter]:  {0} with pid {1} returned {2} on SIGHUP after timeout".format (b, pid, rv))
         compost = Compost ()
         compost.dropFrames ()
+        writelog ('[composter]: finished cycle.  Compost info: chunks={0}, frames={1}, bytes={2}, pixels={3}'.format (
+          len (compost._chunks), compost._frames, compost._bytes, compost._pixels))
         del compost
 
       except ImportError:
