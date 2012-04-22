@@ -63,10 +63,7 @@ class Compost:
   def load (self):
     self.lockCompost ()
     picklefile = open (self._filename, "r")
-    try:
-      self._chunks = pickle.load (picklefile)
-    except EOFError:
-      pass
+    self._chunks = pickle.load (picklefile)
     picklefile.close ()
     self.unlockCompost ()
 
