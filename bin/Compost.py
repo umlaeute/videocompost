@@ -64,6 +64,7 @@ class Compost:
     self.lockCompost ()
     picklefile = open (self._filename, "r")
     self._chunks = pickle.load (picklefile)
+    picklefile.close ()
     self.unlockCompost ()
 
   def lockCompost (self):
