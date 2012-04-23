@@ -21,6 +21,8 @@ from vcconfig import *
 """
 Adapt config to your needs.  Use loadConfig () and saveConfig ()
 to store data across runs.
+
+not used here!
 """
 config = {}
 config["name"] = __name__
@@ -83,36 +85,31 @@ def runMe ():
   min_duration = 1     # lasts for 1 frame
   max_duration = 125   # lasts for 125 frames
 
-  loadConfig ()
-  writelog ("[{0}]: starting to make {1} scratches in video starting at chunk {2}".format (
-    __name__, len (compost._chunks), config["chunk"]))
-
+  writelog ("[{0}]:  starting to make {1} scratches in video".format (
+    __name__, len (compost._chunks)))
 
   # loop over the number of chunks available
   for chunk in range (0, len (compost._chunks)):
-    if chunk < config["chunk"]:
-      chunk = config["chunk"]
+
     try:
       random.seed ()
       length = random.randint (min_length, max_length)
       duration = random.randint (min_duration, max_duration)
-      startpixel = random.randint (0, compost._pixels - length)
+      startpixel = random.randint (0, (compost._pixels - length) - duration)
+
       for i in range (0, duration):
         startpixel += frame_size * i
         for pixel in range (startpixel, startpixel + length * frame_width, frame_width):
           compost.setPixelColor (pixel, [white, white, white])
+
       compost.addEntropy (startpixel + (length * duration))
+
       del length
       del duration
       del startpixel
 
     except BotError as e:
-      config["chunk"] = chunk
-      saveConfig ()
-      return 0
-
-  config["chunk"] = 0
-  saveConfig ()
+     return 0
 
   """
   return a number != 0 to indicate an error to composter.py
