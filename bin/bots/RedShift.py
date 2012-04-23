@@ -46,14 +46,38 @@ def runMe ():
   loadConfig ()
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
-  writelog ("[{0}]: starting to work on chunk {1} at byte {2}".format (
-    __name__, config["chunk"], config["byte"]))
+  writelog ("[{0}]:  starting to work on chunk {1} at byte {2}".format (
+    __name__, config['chunk'], config['byte']))
+
+  forwardchunk = False
+  if config['chunk'] > 0:
+    forwardchunk = True
+
+  forwardbyte = False
+  if config['byte'] > 2:
+    forwardbyte = True
+
   try:
     for chunk in range (0, len (compost._chunks)):
-      if chunk < config["chunk"]:
-        chunk = config["chunk"]
+      # forward to config['chunk'] if neccessary
+      if forwardchunk:
+        if chunk < config['chunk']:
+          continue
+        else:
+          writelog ('[{0}]:  forwarded to chunk {1}.'.format (__name__, chunk))
+          forwardchunk = False
+
       compost.mapChunk (chunk)
-      for byte in range (config["byte"], len (compost._map), 4):
+
+      # forward to config['byte'] if neccessary
+      for byte in range (2, len (compost._map), 4):
+        if forwardbyte:
+          if byte < config['byte']:
+            continue
+          else:
+            writelog ('[{0}]:  forwarded to byte {1}.'.format (__name__, byte))
+            forwardbyte = False
+
         green = ord (compost._map[byte])
         blue = ord (compost._map[byte+1])
         if green > 0:
@@ -64,14 +88,15 @@ def runMe ():
           compost.addEntropy (blue - 1)
 
     # for the next run
-    config["chunk"] = 0
+    config['chunk'] = 0
+    config['byte'] = 2
     saveConfig ()
 
   except BotError as e:
-    config["chunk"] = chunk
-    config["byte"] = byte
+    config['chunk'] = chunk
+    config['byte'] = byte
     saveConfig ()
-    writelog ("[{0}]: caught exception {1}.  Saving chunk {2} at byte {3} for next run".format (
+    writelog ("[{0}]:  caught exception {1}.  Saving chunk {2} at byte {3} for next run".format (
       __name__, e.msg, chunk, byte))
     return 0
 
