@@ -52,20 +52,21 @@ class Compost:
     self.save ()
 
   def save (self):
-    self.lockCompost ()
-    picklefile = open (self._filename, "w")
+    picklefile = open (self._filename, 'w')
+    fcntl.lockf (picklefile, fcntl.LOCK_EX)
     pickle.dump (self._chunks, picklefile)
     picklefile.flush ()
     os.fsync (picklefile.fileno ())
+    fcntl.lockf (picklefile, fcntl.LOCK_UN)
     picklefile.close ()
-    self.unlockCompost ()
 
   def load (self):
-    self.lockCompost ()
-    picklefile = open (self._filename, "r")
+    picklefile = open (self._filename, 'r+')
+    fcntl.lockf (picklefile, fcntl.LOCK_EX)
+    picklefile.flush ()
     self._chunks = pickle.load (picklefile)
+    fcntl.lockf (picklefile, fcntl.LOCK_UN)
     picklefile.close ()
-    self.unlockCompost ()
 
   def lockCompost (self):
     while os.path.isfile (self._compost_lock_name):
