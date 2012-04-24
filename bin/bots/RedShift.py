@@ -1,3 +1,8 @@
+"""
+RedShift - slowly decreasing green and blue values, leaving red untouched.
+works on all pixels in compost (slow!)
+"""
+
 import time
 import os.path
 import pickle
@@ -40,9 +45,6 @@ def saveConfig ():
   outfile.close ()
 
 def runMe ():
-  """
-  slowly removing green and black values
-  """
   loadConfig ()
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
