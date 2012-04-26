@@ -50,33 +50,40 @@ def runMe ():
 
   random.seed()
   
-  loadConfig ()
   signal.signal (signal.SIGHUP, signalhandler)
   signal.signal (signal.SIGINT, signalhandler)
   writelog ("[{0}]: started".format (__name__))
 
   try:
-    chunk1 = random.randint(0, len (compost._chunks))
+    chunk1 = random.randint(0, len (compost._chunks) - 1)
     chunk2 = chunk1
     while chunk2 == chunk1:
-      chunk2 = random.randint(0, len (compost._chunks))
-    compost.mapChunk(chunk1)
-    frameindex = random.randint(0, len (compost._map) / size)
+      chunk2 = random.randint(0, len (compost._chunks) - 1)
 
-    frame = compost._map[frameindex:(frameindex+size)]
+    # save frame1 from chunk1
+    compost.mapChunk(chunk1)
+    frameindex1 = random.randint(0, (len (compost._map) / size) - 1) * size
+    frame1 = compost._map[frameindex1:frameindex1 + size]
+    
+    # save frame2 from chunk2
     compost.mapChunk(chunk2)
-    frameindex = random.randint(0, len (compost._map) / size)
-    compost._map[frameindex:(frameindex+size)]=frame
-    compost.addEntropy (frameindex)
-    saveConfig ()
+    frameindex2 = random.randint(0, (len (compost._map) / size) - 1) * size
+    frame2 = compost._map[frameindex2:frameindex2 + size]
+
+    # write frame1 to chunk2 @ frameindex2
+    compost._map[frameindex2:frameindex2 + size] = frame1
+
+    # write frame2 to chunk1 @ frameindex1
+    compost.mapChunk (chunk1)
+    compost._map[frameindex1:frameindex1 + size] = frame2
+
+    compost.addEntropy (frameindex1 + frameindex2)
+
   except BotError as e:
     writelog ("[{0}]: caught exception {1}.  Exiting".format (__name__, e.msg))
-    saveConfig ()
-    writelog ("[{0}]: caught exception {1}.  Wrote {2} chunks and {3} bytes to config".format (__name__, e.msg, chunk, byte))
     return 0
 
   # print "{0} has done one cyle. resetting config".format (__name__)
-  saveConfig ()
   return 0
   
 if __name__ == "__main__":
