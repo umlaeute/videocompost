@@ -61,11 +61,8 @@ def runMe ():
     while chunk2 == chunk1:
       chunk2 = random.randint(0, len (compost._chunks))
     compost.mapChunk(chunk1)
-    # this try: clause can be deleted I guess
-    try:
-      frameindex = random.randint(0, len (compost._map) / size)
-    except TypeError:
-      writelog ("[{0}]: caught exception.  for chunk {1}".format (__name__, chunk1))
+    frameindex = random.randint(0, len (compost._map) / size)
+
     frame = compost._map[frameindex:(frameindex+size)]
     compost.mapChunk(chunk2)
     frameindex = random.randint(0, len (compost._map) / size)
