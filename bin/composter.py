@@ -95,8 +95,7 @@ def mainLoop ():
 
     compost = Compost ()
     compost.dropFrames ()
-    writelog ('[composter]:  finished cycle.  Compost info: chunks={0}, frames={1}, bytes={2}, pixels={3}, duration={4} seconds'.format (
-      len (compost._chunks), compost._frames, compost._bytes, compost._pixels, compost._frames / 30))
+    writelog ('[composter]:  {0}'.format (compost.stats ()))
     del compost
 
   writelog ("[composter]:  Loop terminated abnormally.")
