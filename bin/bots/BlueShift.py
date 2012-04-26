@@ -85,9 +85,12 @@ def runMe ():
           for index in range (0, region_width):
             pixel = duration + line + index
             color = compost.getPixelColor (pixel)
-            color[0] = color[0] / 10
-            color[1] = color[1] / 10
-            compost.setPixelColor (pixel, color)
+            # check if we have color.  frames get removed so we could be
+            # where there is nothing left ...
+            if color:
+              color[0] = color[0] / 10
+              color[1] = color[1] / 10
+              compost.setPixelColor (pixel, color)
 
       # set new values for next loop
       region_height, region_width, duration, start_pixel = setValues ()
