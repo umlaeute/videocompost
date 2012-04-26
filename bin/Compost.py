@@ -188,9 +188,24 @@ class Compost:
     self.update ()
     self.save ()
 
+  def runTime (self):
+    seconds = self._frames / 30
+    hours = seconds / 3600
+    seconds = seconds - (3600 * hours)
+    minutes = seconds / 60
+    seconds = seconds - (60 * minutes)
+    return '{0:02d}:{1:02d}:{2:02d}'.format (hours, minutes, seconds)
+
+  def printStats (self):
+    print 'Compost stats: chunks={0}, bytes={1}, frames={2}, pixels={3}, duration(hh:mm:ss)={4}'.format (
+      len (self._chunks), self._bytes, self._frames, self._pixels, self.runTime ())
+
 def runcmd (cmd, compost):
   if cmd == "show":
     compost.show ()
+    return 0
+  if cmd == "stats":
+    compost.printStats ()
     return 0
   if cmd == "delete":
     compost.delete ()
