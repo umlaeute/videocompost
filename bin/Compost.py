@@ -189,7 +189,7 @@ class Compost:
     self.save ()
 
   def runTime (self):
-    seconds = self._frames / 30
+    seconds = self._frames / 25
     hours = seconds / 3600
     seconds = seconds - (3600 * hours)
     minutes = seconds / 60
