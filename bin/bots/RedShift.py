@@ -94,12 +94,13 @@ def runMe ():
     config['byte'] = 2
     saveConfig ()
 
-  except BotError as e:
+  # catch any exception and return
+  except Exception as e:
     config['chunk'] = chunk
     config['byte'] = byte
     saveConfig ()
-    writelog ("[{0}]:  caught exception {1}.  Saving chunk {2} at byte {3} for next run".format (
-      __name__, e.msg, chunk, byte))
+    writelog ("[{0}]:  caught exception ({1}).  Saving chunk {2} at byte {3} for next run.".format (
+      __name__, e, chunk, byte))
     return 0
 
   config["chunk"] = 0
