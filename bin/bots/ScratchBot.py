@@ -39,6 +39,9 @@ class BotError (Exception):
   def __init__ (self, msg):
     self.msg = msg
 
+  def __str__ (self):
+    return repr (self.msg)
+
 def signalhandler (signum, frame):
   """
   handler for signals
@@ -108,8 +111,9 @@ def runMe ():
       del duration
       del startpixel
 
-    except BotError as e:
-     return 0
+    except Exception as e:
+      writelog ('[{0}]:  caught exception ({1}).  Exiting.'.format (__name__, e))
+      return 0
 
   """
   return a number != 0 to indicate an error to composter.py

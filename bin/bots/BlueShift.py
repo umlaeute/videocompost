@@ -25,6 +25,9 @@ class BotError (Exception):
   def __init__ (self, msg):
     self.msg = msg
 
+  def __str__ (self):
+    return repr (self.msg)
+
 def signalhandler (signum, frame):
   raise BotError ("received signal {0}".format (signum))
 
@@ -95,14 +98,15 @@ def runMe ():
       # set new values for next loop
       region_height, region_width, duration, start_pixel = setValues ()
 
-  except BotError:
+  except Exception as e:
     config['region_height'] = region_height
     config['region_width'] = region_width
     config['start_pixel'] = start_pixel
     config['duration'] = duration
     config['continue'] = True
     saveConfig ()
-    writelog ("[{0}]:  Interrupted.  Saving values for next run".format (__name__))
+    writelog ("[{0}]:  Caught excption ({1}).  Saving values for next run".format (
+      __name__, e))
     return 0
 
   return 0

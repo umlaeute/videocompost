@@ -40,6 +40,9 @@ class BotError (Exception):
   def __init__ (self, msg):
     self.msg = msg
 
+  def __str__ (self):
+    return repr (self.msg)
+
 def signalhandler (signum, frame):
   """
   handler for signals
@@ -148,10 +151,11 @@ def runMe ():
     config["chunk"] = 0
     saveConfig ()
 
-  except BotError as e:
+  except Exception as e:
     config["chunk"] = chunk
     saveConfig ()
-    writelog ('[{0}: stopped by signal.  saving chunk={1} for next run'.format (__name__, chunk))
+    writelog ('[{0}]:  Caught exception ({1}).  saving chunk={2} for next run'.format (
+      __name__, e, chunk))
     return 0
 
   """

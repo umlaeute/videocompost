@@ -26,6 +26,9 @@ class BotError (Exception):
   def __init__ (self, msg):
     self.msg = msg
 
+  def __str__ (self):
+    return repr (self.msg)
+
 def signalhandler (signum, frame):
   raise BotError ("received signal {0}".format (signum))
 

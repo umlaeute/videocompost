@@ -19,6 +19,9 @@ class BotError (Exception):
   def __init__ (self, msg):
     self.msg = msg
 
+  def __str__ (self):
+    return repr (self.msg)
+
 def signalhandler (signum, frame):
   raise BotError ("received signal {0}".format (signum))
 
@@ -79,8 +82,8 @@ def runMe ():
 
     compost.addEntropy (frameindex1 + frameindex2)
 
-  except BotError as e:
-    writelog ("[{0}]: caught exception {1}.  Exiting".format (__name__, e.msg))
+  except Exception as e:
+    writelog ("[{0}]:  Caught exception ({1}).  Exiting".format (__name__, e))
     return 0
 
   # print "{0} has done one cyle. resetting config".format (__name__)
