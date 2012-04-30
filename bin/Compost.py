@@ -186,7 +186,7 @@ class Compost:
     dropCount = 0
     for index in range (random.randint (0, 9), len (self._chunks), random.randint (6, 12)):
       self.mapChunk (index)
-      dropCount += self._chunk.dropLastFrame ()
+      dropCount += self._chunk.dropLastNFrames ()
       chunkCount += 1
     self.update ()
     self.save ()
