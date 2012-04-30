@@ -56,8 +56,10 @@ class Chunk:
     min_size = 5
     dropNumFrames = 0
     if self._frames > min_size:
+      intervalMin = 1
+      intervalMax = self._frames / 10 + 1
       random.seed ()
-      dropNumFrames = random.randint (1, self._frames - min_size)
+      dropNumFrames = random.randint (intervalMin, intervalMax)
       self._map.resize ((self._frames - dropNumFrames) * 320 * 240 * 4)
       self.updateChunk ()
     else:
