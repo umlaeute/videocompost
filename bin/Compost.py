@@ -182,11 +182,15 @@ class Compost:
     print 'totals\nframes: {0}\nbytes: {1}\npixels: {2}'.format (self._frames, self._bytes, self._pixels)
 
   def dropFrames (self):
+    chunkCount = 0
+    dropCount = 0
     for index in range (random.randint (0, 9), len (self._chunks), random.randint (6, 12)):
       self.mapChunk (index)
-      self._chunk.dropLastFrame ()
+      dropCount += self._chunk.dropLastFrame ()
+      chunkCount += 1
     self.update ()
     self.save ()
+    writelog ('[Compost]:  dropped {0} frames from {1} chunks'.format (dropCount, chunkCount))
 
   def runTime (self):
     seconds = self._frames / 25
