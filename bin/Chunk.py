@@ -47,11 +47,16 @@ class Chunk:
       self._frames, self._firstpixel, self._lastpixel, self._bytes)
 
   def dropLastFrame (self):
-    if self._frames > 16:
-      self._map.resize ((self._frames - 1) * 320 * 240 * 4)
+    min_size = 5
+    dropNumFrames = 1
+    if self._frames > min_size:
+      self._map.resize ((self._frames - dropNumFrames) * 320 * 240 * 4)
       self.updateChunk ()
-      # writelog ('[Chunk]: dropped last frame from {0};  {1} frames left'.format (self._index, self._frames))
+    else:
+      writelog ('[Chunk]:  frame {0} reached minimum size {1}'.format (self._index, min_size))
+      dropNumFrames = 0
     self.closeChunk ()
+    return dropNumFrames
 
 # vim: tw=0 ts=2 expandtab
 # EOF
