@@ -2,6 +2,7 @@
 
 import os
 import mmap
+import random
 from VCLogger import writelog
 
 class Chunk:
@@ -46,15 +47,21 @@ class Chunk:
       self._index, self._filename, self._firstframe, (self._firstframe + self._frames - 1),
       self._frames, self._firstpixel, self._lastpixel, self._bytes)
 
-  def dropLastFrame (self):
+  def dropLastNFrames (self):
+    """
+    Drops a random number of frames from Chunk if there are more than
+    min_size frames left in Chunk.
+    Returns the number of dropped frames.
+    """
     min_size = 5
-    dropNumFrames = 1
+    dropNumFrames = 0
     if self._frames > min_size:
+      random.seed ()
+      dropNumFrames = random.randint (1, self._frames - min_size)
       self._map.resize ((self._frames - dropNumFrames) * 320 * 240 * 4)
       self.updateChunk ()
     else:
       writelog ('[Chunk]:  frame {0} reached minimum size {1}'.format (self._index, min_size))
-      dropNumFrames = 0
     self.closeChunk ()
     return dropNumFrames
 
