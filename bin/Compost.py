@@ -184,13 +184,9 @@ class Compost:
   def dropFrames (self):
     chunkCount = 0
     dropCount = 0
-    dropCountSaved = 0
     for index in range (random.randint (0, 9), len (self._chunks), random.randint (12, 18)):
       self.mapChunk (index)
       dropCount += self._chunk.dropLastNFrames ()
-      if dropCount == dropCountSaved:
-        writelog ('[Compost]:  Chunk {0} has reached minimum frame count.  Could be deleted.'.format (index))
-      dropCountSaved = dropCount
       chunkCount += 1
     self.update ()
     self.save ()
