@@ -63,7 +63,7 @@ class Chunk:
       self._map.resize ((self._frames - dropNumFrames) * 320 * 240 * 4)
       self.updateChunk ()
     else:
-      writelog ('[Chunk]:  frame {0} reached minimum size {1}'.format (self._index, min_size))
+      writelog ('[Chunk]:  chunk {0} reached minimum size {1}.'.format (self._index, min_size))
     self.closeChunk ()
     return dropNumFrames
 
