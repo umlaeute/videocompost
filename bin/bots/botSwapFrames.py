@@ -57,34 +57,37 @@ def runMe ():
   signal.signal (signal.SIGINT, signalhandler)
   writelog ("[{0}]: started".format (__name__))
 
-  try:
-    chunk1 = random.randint(0, len (compost._chunks) - 1)
-    chunk2 = chunk1
-    while chunk2 == chunk1:
-      chunk2 = random.randint(0, len (compost._chunks) - 1)
+  for i in range(len(compost._chunks)/10):
+    try:
+      chunk1 = random.randint(0, len (compost._chunks) - 1)
+      chunk2 = chunk1
+      while chunk2 == chunk1:
+        chunk2 = random.randint(0, len (compost._chunks) - 1)
 
-    # save frame1 from chunk1
-    compost.mapChunk(chunk1)
-    frameindex1 = random.randint(0, (len (compost._map) / size) - 1) * size
-    frame1 = compost._map[frameindex1:frameindex1 + size]
-    
-    # save frame2 from chunk2
-    compost.mapChunk(chunk2)
-    frameindex2 = random.randint(0, (len (compost._map) / size) - 1) * size
-    frame2 = compost._map[frameindex2:frameindex2 + size]
+      #writelog ("[{0}]:  swapping frames {1} <-> {2} (iteration {3})".format (__name__, chunk1, chunk2, i))
 
-    # write frame1 to chunk2 @ frameindex2
-    compost._map[frameindex2:frameindex2 + size] = frame1
+      # save frame1 from chunk1
+      compost.mapChunk(chunk1)
+      frameindex1 = random.randint(0, (len (compost._map) / size) - 1) * size
+      frame1 = compost._map[frameindex1:frameindex1 + size]
 
-    # write frame2 to chunk1 @ frameindex1
-    compost.mapChunk (chunk1)
-    compost._map[frameindex1:frameindex1 + size] = frame2
+      # save frame2 from chunk2
+      compost.mapChunk(chunk2)
+      frameindex2 = random.randint(0, (len (compost._map) / size) - 1) * size
+      frame2 = compost._map[frameindex2:frameindex2 + size]
 
-    compost.addEntropy (frameindex1 + frameindex2)
+      # write frame1 to chunk2 @ frameindex2
+      compost._map[frameindex2:frameindex2 + size] = frame1
 
-  except Exception as e:
-    writelog ("[{0}]:  Caught exception ({1}).  Exiting".format (__name__, e))
-    return 0
+      # write frame2 to chunk1 @ frameindex1
+      compost.mapChunk (chunk1)
+      compost._map[frameindex1:frameindex1 + size] = frame2
+
+      compost.addEntropy (frameindex1 + frameindex2)
+
+    except Exception as e:
+      writelog ("[{0}]:  Caught exception ({1}).  Exiting".format (__name__, e))
+      return 0
 
   # print "{0} has done one cyle. resetting config".format (__name__)
   return 0
