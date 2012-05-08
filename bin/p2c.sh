@@ -18,6 +18,6 @@ COMPOSTER_PID="$BASE/run/vc.pid"
 kill -1 $(cat $PLAYER_PID)
 
 # start composter
-$COMPOSTER
+$COMPOSTER &
 
 # EOF

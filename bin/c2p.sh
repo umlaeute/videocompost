@@ -18,6 +18,6 @@ kill -1 $(cat $COMPOSTER_PID)
 
 # start player
 export DISPLAY=:0
-$PLAYER 2>/dev/null 1>/dev/null
+$PLAYER & 2>/dev/null 1>/dev/null
 
 # EOF
