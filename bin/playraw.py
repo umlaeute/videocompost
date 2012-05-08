@@ -73,16 +73,16 @@ class GTK_Main:
 		self.fileplayer.set_property("location", self.get_next_file())
 		self.pipeline.set_state(gst.STATE_PLAYING)
 		
-	def start_stop(self, w):
-		if self.button.get_label() == "Start":
-			filepath = self.entry.get_text()
-			if os.path.isfile(filepath):
-				self.button.set_label("Stop")
-				self.fileplayer.set_property("location", filepath)
-				self.pipeline.set_state(gst.STATE_PLAYING)
-		else:
-			self.pipeline.set_state(gst.STATE_NULL)
-			self.button.set_label("Start")
+# 	def start_stop(self, w):
+# 		if self.button.get_label() == "Start":
+# 			filepath = self.entry.get_text()
+# 			if os.path.isfile(filepath):
+# 				self.button.set_label("Stop")
+# 				self.fileplayer.set_property("location", filepath)
+# 				self.pipeline.set_state(gst.STATE_PLAYING)
+# 		else:
+# 			self.pipeline.set_state(gst.STATE_NULL)
+# 			self.button.set_label("Start")
 						
 	def on_message(self, bus, message):
 		t = message.type
