@@ -84,6 +84,7 @@ def runMe ():
       for frame in range (0, duration):
         # loop over lines
         for line in range (start_pixel, start_pixel + width * region_height, width):
+          compost.addEntropy (start_pixel)
           # loop over pixels in a line
           for index in range (0, region_width):
             pixel = duration + line + index
