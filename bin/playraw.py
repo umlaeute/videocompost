@@ -29,6 +29,8 @@ class GTK_Main:
     window.set_title("Video-Player")
     window.set_default_size(500, 400)
     window.fullscreen()
+    # make the cursor disappear on realize
+    window.connect("realize", self.realize_cb)
     window.connect("destroy", gtk.main_quit, "WM destroy")
     vbox = gtk.VBox()
     window.add(vbox)
@@ -141,6 +143,12 @@ class GTK_Main:
     pidfile = open (pidfilename, "w")
     pidfile.write ("{0}".format (os.getpid ()))
     pidfile.close ()
+
+  def realize_cb(self, widget):
+    pixmap = gtk.gdk.Pixmap(None, 1, 1, 1)
+    color = gtk.gdk.Color()
+    cursor = gtk.gdk.Cursor(pixmap, pixmap, color, color, 0, 0)
+    widget.window.set_cursor(cursor)
 
 GTK_Main()
 gtk.gdk.threads_init()
