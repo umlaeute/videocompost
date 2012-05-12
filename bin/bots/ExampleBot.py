@@ -3,7 +3,7 @@
 Example for a videocompost bot This will be imported by composter.py
 which then will call this module's runMe () method.
 
-Version 0.2 May 7, 2011
+Version 0.3 May 12, 2012
 
 Place your code in the runMe () method below.  If you want to leave log
 messages, use the writelog () method.  It would be nice to provide the
@@ -27,7 +27,8 @@ To access video data you have two options:
 
     compost.getPixelColor (pixel)
 
-  which returns a 3-element list with the pixels RGB values and
+  where 'pixel' is the index of the pixel yout want, ranging from 0 to
+  compost._pixels.  It returns a 3-element list with the pixels RGB values and
 
     compost.setPixelColor (pixel, color)
 
@@ -50,7 +51,7 @@ To access video data you have two options:
 * mmap access
 
   Use the compost module's method mapChunk (num) to map a chunk into
-  memory.  To map the third chunk issue
+  memory.  To map the third chunk you would call
 
     compost.mapChunk (3)
 
@@ -63,6 +64,10 @@ To access video data you have two options:
 Be gentle to pixels ;)  Your code will be running for more than a year!
 Over time, more data will be added to the pool, so there might be data
 you have not seen before.
+
+When saving the state of your bot for the next run, keep in mind that
+frames/pixels might disappear!  After each completed cycle, a random number of
+frames will be deleted from about 10% of all chunks in compost.
 
 [1]  http://docs.python.org/release/2.6.6/library/mmap.html
 """
@@ -142,17 +147,40 @@ def runMe ():
     writelog ("[{0}]:  started".format (__name__))
     saveConfig ()
     """
-    your code here
+    Your code should go here.  Some examples illustrate how
+    things can work.
+
+    Example loop over all pixels, saving the current pixels
+    color:
     """
+
+    for pixel in range (0, compost._pixles):
+      color = compost.getPixelColor (pixel)
+
+    """
+    Example on how to use the memory mapping way of accessing data.
+    We just save the three color channels of the first pixel from chunk
+    number 4:
+    """
+
+    compost.mapChunk (4)
+    red = ord (compost._map[1])
+    green = ord (compost._map[2])
+    blue = ord (compost._map[3])
+
+    """
+    make use of the addEntropy method every once a while to
+    help feed the machine's entropy pool.  Like here we feed it 
+    the product of the three color channels from above
+    """
+
+    compost.addEntropy (red * green * blue)
 
   except Exception as e:
     saveConfig ()
     writelog ("[{0}]:  Caught exception ({1}).  Exiting.".format (__name__, e))
     return 0
 
-  """
-  return a number != 0 to indicate an error to composter.py
-  """
   return 0
   
 if __name__ == "__main__":
