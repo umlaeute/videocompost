@@ -205,16 +205,22 @@ class Compost:
       len (self._chunks), self._bytes, self._frames, self._pixels, self.runTime ())
 
 def runcmd (cmd, compost):
-  if cmd == "show":
+  if cmd == 'save':
+    compost.save ()
+    return 0
+  if cmd == 'update':
+    compost.update ()
+    return 0
+  if cmd == 'show':
     compost.show ()
     return 0
-  if cmd == "stats":
+  if cmd == 'stats':
     print compost.stats ()
     return 0
-  if cmd == "delete":
+  if cmd == 'delete':
     compost.delete ()
     return 0
-  if cmd == "":
+  if cmd == '':
     return 0
   print ">> Unknown command '{0}'".format (cmd)
   return 0
